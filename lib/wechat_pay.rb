@@ -1,4 +1,6 @@
+require 'restclient'
 require 'wechat_pay/sign'
+require 'wechat_pay/ecommerce'
 
 module WechatPay
   class<< self

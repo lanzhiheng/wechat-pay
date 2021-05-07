@@ -1,5 +1,6 @@
 require 'openssl'
 require 'minitest/autorun'
+require 'json'
 require 'wechat_pay'
 
 WechatPay.appid = 'wxd930ea5d5a258f4f'

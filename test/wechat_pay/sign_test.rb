@@ -1,9 +1,35 @@
-require 'json'
 require 'test_helper'
 
 class WechatPay::SignTest < MiniTest::Test
   def setup
     @wechat_platform_key = OpenSSL::PKey::RSA.new(File.read('test/fixtures/random_platform_key.pem'))
+  end
+
+  def test_sign_important_info
+    important_text = 'Ruby'
+    signature = WechatPay::Sign.sign_important_info(important_text)
+    result = @wechat_platform_key.private_decrypt(Base64.strict_decode64(signature), OpenSSL::PKey::RSA::PKCS1_OAEP_PADDING)
+    assert_equal important_text, result
+  end
+
+  def test_decrypt_the_encrypt_params_from_wechat
+    data = "Very, very confidential data"
+    nonce = '46e4d8f11f62' # 必须是12个字节
+    associated_data = 'transaction'
+    cipher = OpenSSL::Cipher.new('aes-256-gcm').encrypt
+    cipher.key = WechatPay.mch_key
+    cipher.iv =  nonce
+    cipher.auth_data = associated_data
+    encrypted = cipher.update(data) + cipher.final
+    tag = cipher.auth_tag # produces 16 bytes tag by default
+    ciphertext = Base64.strict_encode64(encrypted + tag)
+
+    result = WechatPay::Sign.decrypt_the_encrypt_params(
+      associated_data: associated_data,
+      nonce: nonce,
+      ciphertext: ciphertext
+    )
+    assert_equal data, result
   end
 
   def test_if_notifications_from_wechat
