@@ -1,3 +1,4 @@
+require 'json'
 require 'wechat_pay/helper'
 
 module WechatPay
@@ -96,6 +97,92 @@ module WechatPay
             'Wechatpay-Serial' => WechatPay.platform_serial_no
           }
         )
+      end
+
+      # app下单
+      # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_1.shtml
+      #
+      # Example:
+      # params = {
+      #   sp_appid: 'Your appid',
+      #   sp_mchid: 'Your mchid',
+      #   description: 'pay',
+      #   out_trade_no: 'Order Number',
+      #   payer: {
+      #     sp_openid: 'wechat open id'
+      #   },
+      #   amount: {
+      #     total: 10
+      #   },
+      #   sub_mchid: 'Your sub mchid',
+      #   notify_url: 'the url'
+      # }
+      #
+      # WechatPay::Ecommerce.invoke_transactions_in_app(params)
+      #
+      #
+      # js或小程序下单
+      # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_2.shtml
+      # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_3.shtml
+      #
+      # Example:
+      # params = {
+      #   sp_appid: 'Your appid',
+      #   sp_mchid: 'Your mchid',
+      #   description: 'pay',
+      #   out_trade_no: 'Order Number',
+      #   payer: {
+      #     sp_openid: 'wechat open id'
+      #   },
+      #   amount: {
+      #     total: 10
+      #   },
+      #   sub_mchid: 'Your sub mchid',
+      #   notify_url: 'the url'
+      # }
+      #
+      # WechatPay::Ecommerce.invoke_transactions_in_js(params)
+      #
+      #
+      # h5下单
+      # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_4.shtml
+      #
+      # Example:
+      # params = {
+      #   sp_appid: 'Your appid',
+      #   sp_mchid: 'Your mchid',
+      #   description: 'pay',
+      #   out_trade_no: 'Order Number',
+      #   payer: {
+      #     sp_openid: 'wechat open id'
+      #   },
+      #   amount: {
+      #     total: 10
+      #   },
+      #   sub_mchid: 'Your sub mchid',
+      #   notify_url: 'the url'
+      # }
+      #
+      # WechatPay::Ecommerce.invoke_transactions_in_5(params)
+      {
+        js: 'jsapi',
+        app: 'app',
+        h5: 'h5'
+      }.each do |key, value|
+        const_set("INVOKE_TRANSACTIONS_IN_#{key.upcase}_FIELDS", %i[sp_appid sp_mchid sub_mchid description out_trade_no notify_url amount])
+        define_method("invoke_transactions_in_#{key}") do |params|
+          url = "/v3/pay/partner/transactions/#{value}"
+          method = 'POST'
+
+          payload_json = params.to_json
+
+          make_request(
+            method: method,
+            path: url,
+            for_sign: payload_json,
+            payload: payload_json
+          )
+        end
       end
 
       # 视频上传
