@@ -185,6 +185,62 @@ module WechatPay
         end
       end
 
+      # 订单查询
+      # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_5.shtml
+      # 微信支付订单号查询
+      # WechatPay::Ecommerce.query_order(sub_mchid: '16000008', transaction_id: '4323400972202104305133344444')
+      # 商户订单号查询
+      # WechatPay::Ecommerce.query_order(sub_mchid: '16000008', out_trade_no: 'N202104302474')
+      QUERY_ORDER_FIELDS = %i[sub_mchid out_trade_no transaction_id].freeze
+      def query_order(params)
+        if params[:transaction_id]
+          params.delete(:out_trade_no)
+          transaction_id = params.delete(:transaction_id)
+          path = "/v3/pay/partner/transactions/id/#{transaction_id}"
+        else
+          params.delete(:transaction_id)
+          out_trade_no = params.delete(:out_trade_no)
+          path = "/v3/pay/partner/transactions/out-trade-no/#{out_trade_no}"
+        end
+
+        params = params.merge({
+                                sp_mchid: WechatPay.mch_id
+                              })
+
+        method = 'GET'
+        query = build_query(params)
+        url = "#{path}?#{query}"
+
+        make_request(
+          method: method,
+          path: url,
+          extra_headers: {
+            'Content-Type' => 'application/x-www-form-urlencoded'
+          }
+        )
+      end
+
+      # 关闭订单
+      # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_6.shtml
+      # WechatPay::Ecommerce.close_order(sub_mchid: '16000008', out_trade_no: 'N3344445')
+      CLOSE_ORDER_FIELDS = %i[sub_mchid out_trade_no].freeze
+      def close_order(params)
+        out_trade_no = params.delete(:out_trade_no)
+        url = "/v3/pay/partner/transactions/out-trade-no/#{out_trade_no}/close"
+        params = params.merge({
+                                sp_mchid: WechatPay.mch_id
+                              })
+
+        method = 'POST'
+
+        make_request(
+          method: method,
+          path: url,
+          for_sign: params.to_json,
+          payload: params.to_json
+        )
+      end
+
       # 视频上传
       # Doc: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter2_1_2.shtml
       def media_video_upload(video)
