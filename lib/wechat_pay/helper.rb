@@ -1,4 +1,6 @@
-require "active_support/concern"
+# frozen_string_literal: true
+
+require 'active_support/concern'
 
 module WechatPayHelper
   GATEWAY_URL = 'https://api.mch.weixin.qq.com'

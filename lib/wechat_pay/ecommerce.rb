@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 require 'wechat_pay/helper'
 
@@ -169,7 +171,8 @@ module WechatPay
         app: 'app',
         h5: 'h5'
       }.each do |key, value|
-        const_set("INVOKE_TRANSACTIONS_IN_#{key.upcase}_FIELDS", %i[sp_appid sp_mchid sub_mchid description out_trade_no notify_url amount])
+        const_set("INVOKE_TRANSACTIONS_IN_#{key.upcase}_FIELDS",
+                  %i[sp_appid sp_mchid sub_mchid description out_trade_no notify_url amount])
         define_method("invoke_transactions_in_#{key}") do |params|
           url = "/v3/pay/partner/transactions/#{value}"
           method = 'POST'
