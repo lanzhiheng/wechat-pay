@@ -17,7 +17,8 @@ module WechatPay
       Time.stub :now, timestamp do
         SecureRandom.stub :hex, hex do
           params = WechatPay::Sign.generate_payment_params_from_prepay_id_and_appid(appid, prepay_id)
-          result = {"timeStamp"=>"1600000", "nonceStr"=>"hhhhhhhhh", "package"=>"prepay_id=prepay_id", "paySign"=>"aTNV10+9mzmONvPuL6lSW+LRvNa1Z3LVAVTAKjYyJ7LmgHjIZ8piKNBBOCRx5l+71QBZoFBDqEjAfi4rHdSIaO4vGfAXxNqsZNjueNlE1yQEgKHDarYWV/uLuxzNCgG1vwz6cTzP8TvCXsihrL43duNxNNgR8ERxGs5/IOXKANc59vlYW1eeOjc98Q+0J1OQPlTIMDzFXqjf9i9dkGdJfFG5Z+bDceeDcGhZEw8+T6kJSvWRZxRzJ1C7NKR2ITkX7Yg9joxz6oCwhfcsrnOkOI8gwdK/L/OKjP7TQzntQKWjfYAcmdOUTuXhLpymcunUkKUd0gXv3SNwFdQk0vzmMg==", "signType"=>"RSA"}
+          result = { 'timeStamp' => '1600000', 'nonceStr' => 'hhhhhhhhh', 'package' => 'prepay_id=prepay_id',
+                     'paySign' => 'aTNV10+9mzmONvPuL6lSW+LRvNa1Z3LVAVTAKjYyJ7LmgHjIZ8piKNBBOCRx5l+71QBZoFBDqEjAfi4rHdSIaO4vGfAXxNqsZNjueNlE1yQEgKHDarYWV/uLuxzNCgG1vwz6cTzP8TvCXsihrL43duNxNNgR8ERxGs5/IOXKANc59vlYW1eeOjc98Q+0J1OQPlTIMDzFXqjf9i9dkGdJfFG5Z+bDceeDcGhZEw8+T6kJSvWRZxRzJ1C7NKR2ITkX7Yg9joxz6oCwhfcsrnOkOI8gwdK/L/OKjP7TQzntQKWjfYAcmdOUTuXhLpymcunUkKUd0gXv3SNwFdQk0vzmMg==', 'signType' => 'RSA' }
           assert_equal params, result
         end
       end
