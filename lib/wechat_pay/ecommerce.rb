@@ -9,6 +9,7 @@ require 'wechat_pay/ecommerce/order'
 require 'wechat_pay/ecommerce/combine_order'
 require 'wechat_pay/ecommerce/profitsharing'
 require 'wechat_pay/ecommerce/subsidies'
+require 'wechat_pay/ecommerce/refund'
 
 module WechatPay
   module Ecommerce
