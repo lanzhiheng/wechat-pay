@@ -8,6 +8,7 @@ require 'wechat_pay/ecommerce/applyment'
 require 'wechat_pay/ecommerce/order'
 require 'wechat_pay/ecommerce/combine_order'
 require 'wechat_pay/ecommerce/profitsharing'
+require 'wechat_pay/ecommerce/subsidies'
 
 module WechatPay
   module Ecommerce
