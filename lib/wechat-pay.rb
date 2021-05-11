@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require 'restclient'
-require 'wechat_pay/sign'
-require 'wechat_pay/ecommerce'
+require 'wechat-pay/sign'
+require 'wechat-pay/ecommerce'
 
 module WechatPay
   class<< self

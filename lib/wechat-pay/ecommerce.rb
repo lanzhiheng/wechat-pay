@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 require 'json'
-require 'wechat_pay/helper'
-require 'wechat_pay/ecommerce/withdraw'
-require 'wechat_pay/ecommerce/balance'
-require 'wechat_pay/ecommerce/applyment'
-require 'wechat_pay/ecommerce/order'
-require 'wechat_pay/ecommerce/combine_order'
-require 'wechat_pay/ecommerce/profitsharing'
-require 'wechat_pay/ecommerce/subsidies'
-require 'wechat_pay/ecommerce/refund'
-require 'wechat_pay/ecommerce/bill'
+require 'wechat-pay/helper'
+require 'wechat-pay/ecommerce/withdraw'
+require 'wechat-pay/ecommerce/balance'
+require 'wechat-pay/ecommerce/applyment'
+require 'wechat-pay/ecommerce/order'
+require 'wechat-pay/ecommerce/combine_order'
+require 'wechat-pay/ecommerce/profitsharing'
+require 'wechat-pay/ecommerce/subsidies'
+require 'wechat-pay/ecommerce/refund'
+require 'wechat-pay/ecommerce/bill'
 
 module WechatPay
   module Ecommerce

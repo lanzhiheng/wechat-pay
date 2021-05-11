@@ -3,7 +3,7 @@
 require 'openssl'
 require 'minitest/autorun'
 require 'json'
-require 'wechat_pay'
+require 'wechat-pay'
 
 WechatPay.appid = 'wxd930ea5d5a258f4f'
 WechatPay.mch_key = '8934e7d15453e97507ef794cf7b0519d'

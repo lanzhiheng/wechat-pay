@@ -2,7 +2,7 @@
 
 $LOAD_PATH.push File.expand_path('lib', __dir__)
 
-require 'wechat_pay/version'
+require 'wechat-pay/version'
 
 Gem::Specification.new do |s|
   s.name        = 'wechat-pay'
@@ -11,9 +11,10 @@ Gem::Specification.new do |s|
   s.description = 'A simple Wechat pay ruby gem in api V3.'
   s.authors     = ['lanzhiheng']
   s.email       = 'lanzhiheng@gmail.com'
-  s.files       = ['lib/wechat_pay.rb']
+  s.files       = ['lib/wechat-pay.rb']
   s.require_paths = ['lib']
-  s.homepage = 'https://github.com/lanzhiheng/wechat_pay'
+  s.homepage = 'https://rubygems.org/gems/wechat-pay'
+  s.metadata = { "source_code_uri" => "https://github.com/lanzhiheng/wechat-pay" }
   s.license = 'MIT'
 
   s.add_runtime_dependency 'activesupport', '>= 3.2'
