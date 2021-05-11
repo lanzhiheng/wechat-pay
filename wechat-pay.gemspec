@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-$LOAD_PATH.push File.expand_path('lib', __dir__)
+$LOAD_PATH.push File.expand_path('../lib', __FILE__)
 
 require 'wechat-pay/version'
 
@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.summary     = 'Wechat Pay in api V3'
   s.description = 'A simple Wechat pay ruby gem in api V3.'
   s.authors     = ['lanzhiheng']
-  s.email       = 'lanzhiheng@gmail.com'
-  s.files       = ['lib/wechat-pay.rb']
+  s.email       = 'lanzhihengrj@gmail.com'
+  s.files       = Dir['lib/**/*.rb']
   s.require_paths = ['lib']
   s.homepage = 'https://rubygems.org/gems/wechat-pay'
   s.metadata = { "source_code_uri" => "https://github.com/lanzhiheng/wechat-pay" }
