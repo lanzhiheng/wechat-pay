@@ -44,6 +44,8 @@ module WechatPay
       # }
       #
       # WechatPay::Ecommerce.invoke_transactions_in_js(params)
+      # OR
+      # WechatPay::Ecommerce.invoke_transactions_in_miniprogram(params)
       #
       #
       # h5下单
@@ -65,11 +67,12 @@ module WechatPay
       #   notify_url: 'the url'
       # }
       #
-      # WechatPay::Ecommerce.invoke_transactions_in_5(params)
+      # WechatPay::Ecommerce.invoke_transactions_in_h5(params)
       {
         js: 'jsapi',
         app: 'app',
-        h5: 'h5'
+        h5: 'h5',
+        miniprogram: 'jsapi'
       }.each do |key, value|
         const_set("INVOKE_TRANSACTIONS_IN_#{key.upcase}_FIELDS",
                   %i[sp_appid sp_mchid sub_mchid description out_trade_no notify_url amount])

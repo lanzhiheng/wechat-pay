@@ -60,7 +60,8 @@ module WechatPay
       # }
       #
       # WechatPay::Ecommerce.invoke_combine_transactions_in_js(params)
-      #
+      # Or
+      # WechatPay::Ecommerce.invoke_combine_transactions_in_miniprogram(params)
       #
       # h5合单
       # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_3_2.shtml
@@ -117,7 +118,8 @@ module WechatPay
         js: 'jsapi',
         app: 'app',
         h5: 'h5',
-        native: 'native'
+        native: 'native',
+        miniprogram: 'jsapi'
       }.each do |key, value|
         const_set("INVOKE_COMBINE_TRANSACTIONS_IN_#{key.upcase}_FIELDS",
                   %i[combine_appid combine_mchid combine_out_trade_no combine_payer_info sub_orders notify_url])
