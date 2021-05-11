@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.description = 'A simple Wechat pay ruby gem in api V3.'
   s.authors     = ['lanzhiheng']
   s.email       = 'lanzhiheng@gmail.com'
-  s.files       = ['lib/wechat-pay.rb']
+  s.files       = ['lib/wechat_pay.rb']
   s.require_paths = ['lib']
   s.homepage = 'https://github.com/lanzhiheng/wechat_pay'
   s.license = 'MIT'
