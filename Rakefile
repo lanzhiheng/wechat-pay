@@ -18,3 +18,13 @@ Rake::TestTask.new(:test) do |t|
 end
 
 task default: :test
+
+task default: :test
+
+require 'rdoc/task'
+Rake::RDocTask.new do |rdoc|
+  rdoc.rdoc_dir = 'rdoc'
+  rdoc.title = "wechat-pay #{WechatPay::VERSION}"
+  rdoc.rdoc_files.include('README*')
+  rdoc.rdoc_files.include('lib/**/*.rb')
+end
