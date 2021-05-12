@@ -5,6 +5,5 @@ require 'test_helper'
 
 module WechatPay
   class EcommerceTest < MiniTest::Test
-
   end
 end

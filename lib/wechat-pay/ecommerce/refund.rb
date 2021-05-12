@@ -1,12 +1,20 @@
+# frozen_string_literal: true
+
 module WechatPay
   module Ecommerce
     class << self
+      INVOKE_REFUND_FIELDS = %i[sub_mchid out_trade_no total refund out_refund_no].freeze # :nodoc:
+      #
       # 退款申请
+      #
       # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_6_1.shtml
+      #
       # Example:
-      #  WechatPay::Ecommerce.invoke_refund(sub_mchid: '1600000', transaction_id: '4323400972202104305131070170', total: 1, refund: 1, description: '退款', out_trade_no: 'P103333', out_refund_no: 'R10000')
+      #
+      # ``` ruby
+      # WechatPay::Ecommerce.invoke_refund(sub_mchid: '1600000', transaction_id: '4323400972202104305131070170', total: 1, refund: 1, description: '退款', out_trade_no: 'P103333', out_refund_no: 'R10000')
       # WechatPay::Ecommerce.invoke_refund(sub_mchid: '1608977559', total: 1, refund: 1, description: '退款', out_trade_no: 'N202104302474', out_refund_no: 'R10000')
-      INVOKE_REFUND_FIELDS = %i[sub_mchid out_trade_no total refund out_refund_no].freeze
+      # ```
       def invoke_refund(params)
         url = '/v3/ecommerce/refunds/apply'
         method = 'POST'
@@ -29,14 +37,19 @@ module WechatPay
         )
       end
 
+      QUERY_REFUND_FIELDS = %i[sub_mchid refund_id out_refund_no].freeze # :nodoc:
+      #
       # 退款查询
+      #
       # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_6_2.shtml
+      #
       # Example:
-      # 注意这里的out_refund_no用的是商户订单号，微信文档有误
-      # WechatPay::Ecommerce.query_refund(sub_mchid: '16000000', out_refund_no: 'N202104302474')
-      # 注意这里的refund_id用的是微信交易单号transaction_id，微信文档有误
-      # WechatPay::Ecommerce.query_refund(sub_mchid: '16000000', refund_id: '420000103020210508005624628')
-      QUERY_REFUND_FIELDS = %i[sub_mchid refund_id out_refund_no].freeze
+      #
+      # ``` ruby
+      # WechatPay::Ecommerce.query_refund(sub_mchid: '16000000', out_refund_no: 'N202104302474') # 注意这里的out_refund_no用的是商户订单号，微信文档有误
+      # WechatPay::Ecommerce.query_refund(sub_mchid: '16000000', refund_id: '420000103020210508005624628') # 注意这里的refund_id用的是微信交易单号transaction_id，微信文档有误
+      # ```
+      #
       def query_refund(params)
         if params[:refund_id]
           params.delete(:out_refund_no)
@@ -65,11 +78,18 @@ module WechatPay
         )
       end
 
+      RETURN_ADVANCE_REFUND_FIELDS = %i[refund_id sub_mchid].freeze # :nodoc:
+      #
       # 垫付退款回补
+      #
       # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_6_4.shtml
+      #
       # Example:
-      # > WechatPay::Ecommerce.return_advance_refund(refund_id: '50300908092021043008398036516', sub_mchid: '160000')
-      RETURN_ADVANCE_REFUND_FIELDS = %i[refund_id sub_mchid].freeze
+      #
+      # ``` ruby
+      # WechatPay::Ecommerce.return_advance_refund(refund_id: '50300908092021043008398036516', sub_mchid: '160000')
+      # ```
+      #
       def return_advance_refund(params)
         refund_id = params.delete(:refund_id)
         url = "/v3/ecommerce/refunds/#{refund_id}/return-advance"
@@ -83,14 +103,19 @@ module WechatPay
         )
       end
 
+      QUERY_RETURN_ADVANCE_REFUND_FIELDS = %i[sub_mchid refund_id].freeze # :nodoc:
+      #
       # 退款查询
+      #
       # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_6_2.shtml
+      #
       # Example:
-      # 注意这里的out_refund_no用的是商户订单号，微信文档有误
-      # WechatPay::Ecommerce.query_refund(sub_mchid: '16000000', out_refund_no: 'N202104302474')
-      # 注意这里的refund_id用的是微信交易单号transaction_id，微信文档有误
-      # WechatPay::Ecommerce.query_refund(sub_mchid: '16000000', refund_id: '420000103020210508005624628')
-      QUERY_RETURN_ADVANCE_REFUND_FIELDS = %i[sub_mchid refund_id].freeze
+      #
+      # ``` ruby
+      # WechatPay::Ecommerce.query_refund(sub_mchid: '16000000', out_refund_no: 'N202104302474') # 注意这里的out_refund_no用的是商户订单号，微信文档有误
+      # WechatPay::Ecommerce.query_refund(sub_mchid: '16000000', refund_id: '420000103020210508005624628') # 注意这里的refund_id用的是微信交易单号transaction_id，微信文档有误
+      # ```
+      #
       def query_return_advance_refund(params)
         refund_id = params.delete(:refund_id)
         path = "/v3/ecommerce/refunds/#{refund_id}/return-advance"

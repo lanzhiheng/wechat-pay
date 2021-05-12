@@ -1,10 +1,17 @@
+# frozen_string_literal: true
+
 module WechatPay
   module Ecommerce
     class << self
-      # app下单
-      # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_1.shtml
+      INVOKE_TRANSACTIONS_IN_JS_FIELDS = %i[sp_appid sp_mchid sub_mchid description out_trade_no notify_url amount].freeze # :nodoc:
+      #
+      # js下单
+      #
+      # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_2.shtml
       #
       # Example:
+      #
+      # ```
       # params = {
       #   sp_appid: 'Your appid',
       #   sp_mchid: 'Your mchid',
@@ -21,13 +28,20 @@ module WechatPay
       # }
       #
       # WechatPay::Ecommerce.invoke_transactions_in_app(params)
+      # ```
+      def invoke_transactions_in_js(params)
+        transactions_method_by_suffix('jsapi', params)
+      end
+
+      INVOKE_TRANSACTIONS_IN_MINIPROGRAM_FIELDS = %i[sp_appid sp_mchid sub_mchid description out_trade_no notify_url amount].freeze # :nodoc:
       #
+      # 小程序下单
       #
-      # js或小程序下单
-      # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_2.shtml
       # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_3.shtml
       #
       # Example:
+      #
+      # ```
       # params = {
       #   sp_appid: 'Your appid',
       #   sp_mchid: 'Your mchid',
@@ -43,15 +57,51 @@ module WechatPay
       #   notify_url: 'the url'
       # }
       #
-      # WechatPay::Ecommerce.invoke_transactions_in_js(params)
-      # OR
       # WechatPay::Ecommerce.invoke_transactions_in_miniprogram(params)
+      # ```
+      def invoke_transactions_in_miniprogram(params)
+        transactions_method_by_suffix('jsapi', params)
+      end
+
+      INVOKE_TRANSACTIONS_IN_APP_FIELDS = %i[sp_appid sp_mchid sub_mchid description out_trade_no notify_url amount].freeze # :nodoc:
       #
+      # App下单
+      #
+      # https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_1.shtml
+      #
+      # Example:
+      #
+      # ```
+      # params = {
+      #   sp_appid: 'Your appid',
+      #   sp_mchid: 'Your mchid',
+      #   description: 'pay',
+      #   out_trade_no: 'Order Number',
+      #   payer: {
+      #     sp_openid: 'wechat open id'
+      #   },
+      #   amount: {
+      #     total: 10
+      #   },
+      #   sub_mchid: 'Your sub mchid',
+      #   notify_url: 'the url'
+      # }
+      #
+      # WechatPay::Ecommerce.invoke_transactions_in_miniprogram(params)
+      # ```
+      def invoke_transactions_in_app(params)
+        transactions_method_by_suffix('app', params)
+      end
+
+      INVOKE_TRANSACTIONS_IN_H5_FIELDS = %i[sp_appid sp_mchid sub_mchid description out_trade_no notify_url amount].freeze # :nodoc:
       #
       # h5下单
+      #
       # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_4.shtml
       #
       # Example:
+      #
+      # ``` ruby
       # params = {
       #   sp_appid: 'Your appid',
       #   sp_mchid: 'Your mchid',
@@ -68,36 +118,22 @@ module WechatPay
       # }
       #
       # WechatPay::Ecommerce.invoke_transactions_in_h5(params)
-      {
-        js: 'jsapi',
-        app: 'app',
-        h5: 'h5',
-        miniprogram: 'jsapi'
-      }.each do |key, value|
-        const_set("INVOKE_TRANSACTIONS_IN_#{key.upcase}_FIELDS",
-                  %i[sp_appid sp_mchid sub_mchid description out_trade_no notify_url amount])
-        define_method("invoke_transactions_in_#{key}") do |params|
-          url = "/v3/pay/partner/transactions/#{value}"
-          method = 'POST'
-
-          payload_json = params.to_json
-
-          make_request(
-            method: method,
-            path: url,
-            for_sign: payload_json,
-            payload: payload_json
-          )
-        end
+      # ```
+      def invoke_transactions_in_h5(params)
+        transactions_method_by_suffix('h5', params)
       end
 
+      QUERY_ORDER_FIELDS = %i[sub_mchid out_trade_no transaction_id].freeze # :nodoc:
+      #
       # 订单查询
+      #
       # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_5.shtml
-      # 微信支付订单号查询
-      # WechatPay::Ecommerce.query_order(sub_mchid: '16000008', transaction_id: '4323400972202104305133344444')
-      # 商户订单号查询
-      # WechatPay::Ecommerce.query_order(sub_mchid: '16000008', out_trade_no: 'N202104302474')
-      QUERY_ORDER_FIELDS = %i[sub_mchid out_trade_no transaction_id].freeze
+      #
+      # ``` ruby
+      # WechatPay::Ecommerce.query_order(sub_mchid: '16000008', transaction_id: '4323400972202104305133344444') # by transaction_id
+      # WechatPay::Ecommerce.query_order(sub_mchid: '16000008', out_trade_no: 'N202104302474') # by out_trade_no
+      # ```
+      #
       def query_order(params)
         if params[:transaction_id]
           params.delete(:out_trade_no)
@@ -126,10 +162,16 @@ module WechatPay
         )
       end
 
+      CLOSE_ORDER_FIELDS = %i[sub_mchid out_trade_no].freeze # :nodoc:
+      #
       # 关闭订单
+      #
       # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_6.shtml
+      #
+      # ``` ruby
       # WechatPay::Ecommerce.close_order(sub_mchid: '16000008', out_trade_no: 'N3344445')
-      CLOSE_ORDER_FIELDS = %i[sub_mchid out_trade_no].freeze
+      # ```
+      #
       def close_order(params)
         out_trade_no = params.delete(:out_trade_no)
         url = "/v3/pay/partner/transactions/out-trade-no/#{out_trade_no}/close"
@@ -144,6 +186,22 @@ module WechatPay
           path: url,
           for_sign: params.to_json,
           payload: params.to_json
+        )
+      end
+
+      private
+
+      def transactions_method_by_suffix(suffix, params)
+        url = "/v3/pay/partner/transactions/#{suffix}"
+        method = 'POST'
+
+        payload_json = params.to_json
+
+        make_request(
+          method: method,
+          path: url,
+          for_sign: payload_json,
+          payload: payload_json
         )
       end
     end

@@ -18,7 +18,15 @@ module WechatPay
 
     class<<self
       # 视频上传
-      # Doc: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter2_1_2.shtml
+      #
+      # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter2_1_2.shtml
+      #
+      # Example:
+      #
+      # ``` ruby
+      # WechatPay::Ecommerce.media_video_upload(File.open('Your Video'))
+      # ```
+      #
       def media_video_upload(video)
         url = '/v3/merchant/media/video_upload'
         method = 'POST'
@@ -45,7 +53,14 @@ module WechatPay
       end
 
       # 图片上传
-      # Doc: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter2_1_1.shtml
+      #
+      # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter2_1_1.shtml
+      #
+      # Example:
+      #
+      # ``` ruby
+      # WechatPay::Ecommerce.media_upload(File.open('Your Image'))
+      # ```
       def media_upload(image)
         url = '/v3/merchant/media/upload'
         method = 'POST'

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-$LOAD_PATH.push File.expand_path('../lib', __FILE__)
+$LOAD_PATH.push File.expand_path('lib', __dir__)
 
 require 'wechat-pay/version'
 
@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.files       = Dir['lib/**/*.rb']
   s.require_paths = ['lib']
   s.homepage = 'https://rubygems.org/gems/wechat-pay'
-  s.metadata = { "source_code_uri" => "https://github.com/lanzhiheng/wechat-pay" }
+  s.metadata = { 'source_code_uri' => 'https://github.com/lanzhiheng/wechat-pay' }
   s.license = 'MIT'
 
   s.add_runtime_dependency 'activesupport', '>= 3.2'
