@@ -4,6 +4,18 @@ A simple Wechat pay ruby gem, without unnecessary magic or wrapper. Just a simpl
 
 Please read official document first: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/pages/index.shtml
 
+If you want check the present public api, you can find them in the [Document](https://lanzhiheng.github.io/wechat-pay.github.io/index.html)。
+
+Summary:
+
+`WechatPay::Direct` will contain the public api for direct connection merchant（直连商户）and `WechatPay::Ecommerce` will contain the public api for ecommerce（服务商，电商平台）。For more detail you can refer to the wechat document.
+
+- 直连商户: https://pay.weixin.qq.com/wiki/doc/apiv3/index.shtml
+- 服务商: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/index.shtml
+- 电商平台（电商收付通）: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/open/pay/chapter3_3_3.shtml
+
+If you find any issue in this repo, don't shy to create issues https://github.com/lanzhiheng/wechat-pay/issues 
+
 # Installation
 
 Add this line to your Gemfile:
