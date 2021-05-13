@@ -14,7 +14,7 @@ module WechatPay
       #
       # Example:
       #
-      # ```
+      # ``` ruby
       # params = {
       #   appid: 'Your Open id',
       #   mchid: 'Your Mch id'',
@@ -43,7 +43,7 @@ module WechatPay
       #
       # Example:
       #
-      # ```
+      # ``` ruby
       # params = {
       #   appid: 'Your Open id',
       #   mchid: 'Your Mch id'',
@@ -72,7 +72,7 @@ module WechatPay
       #
       # Example:
       #
-      # ```
+      # ``` ruby
       # params = {
       #   appid: 'Your Open id',
       #   mchid: 'Your Mch id'',
@@ -130,7 +130,7 @@ module WechatPay
       #
       # Example:
       #
-      # ```
+      # ``` ruby
       # params = {
       #   appid: 'Your Open id',
       #   mchid: 'Your Mch id'',
@@ -156,6 +156,8 @@ module WechatPay
       # 直连订单查询
       #
       # Document: https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_5_2.shtml
+      #
+      # Example:
       #
       # ``` ruby
       # WechatPay::Direct.query_order(transaction_id: '4323400972202104305133344444') # by transaction_id
@@ -195,6 +197,8 @@ module WechatPay
       # 关闭订单
       #
       # Document: https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_5_3.shtml
+      #
+      # Example:
       #
       # ``` ruby
       # WechatPay::Direct.close_order(out_trade_no: 'N3344445')
