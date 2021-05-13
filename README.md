@@ -14,7 +14,9 @@ Summary:
 - 服务商: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/index.shtml
 - 电商平台（电商收付通）: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/open/pay/chapter3_3_3.shtml
 
-If you find any issue in this repo, don't shy to create issues https://github.com/lanzhiheng/wechat-pay/issues 
+If you find any issue in this repo, don't shy to create issues https://github.com/lanzhiheng/wechat-pay/issues
+
+For more Information，you can check my posts: https://www.lanzhiheng.com/posts/preview/ruby-gem-for-wechat-pay-v3
 
 # Installation
 

@@ -3,7 +3,7 @@
 module WechatPay
   module Ecommerce
     class << self
-      INVOKE_TRANSACTIONS_IN_JS_FIELDS = %i[sp_appid sp_mchid sub_mchid description out_trade_no notify_url amount].freeze # :nodoc:
+      INVOKE_TRANSACTIONS_IN_JS_FIELDS = %i[sub_mchid description out_trade_no notify_url amount].freeze # :nodoc:
       #
       # js下单
       #
@@ -13,8 +13,6 @@ module WechatPay
       #
       # ```
       # params = {
-      #   sp_appid: 'Your appid',
-      #   sp_mchid: 'Your mchid',
       #   description: 'pay',
       #   out_trade_no: 'Order Number',
       #   payer: {
@@ -33,7 +31,7 @@ module WechatPay
         transactions_method_by_suffix('jsapi', params)
       end
 
-      INVOKE_TRANSACTIONS_IN_MINIPROGRAM_FIELDS = %i[sp_appid sp_mchid sub_mchid description out_trade_no notify_url amount].freeze # :nodoc:
+      INVOKE_TRANSACTIONS_IN_MINIPROGRAM_FIELDS = %i[sub_mchid description out_trade_no notify_url amount].freeze # :nodoc:
       #
       # 小程序下单
       #
@@ -43,8 +41,6 @@ module WechatPay
       #
       # ```
       # params = {
-      #   sp_appid: 'Your appid',
-      #   sp_mchid: 'Your mchid',
       #   description: 'pay',
       #   out_trade_no: 'Order Number',
       #   payer: {
@@ -63,7 +59,7 @@ module WechatPay
         transactions_method_by_suffix('jsapi', params)
       end
 
-      INVOKE_TRANSACTIONS_IN_APP_FIELDS = %i[sp_appid sp_mchid sub_mchid description out_trade_no notify_url amount].freeze # :nodoc:
+      INVOKE_TRANSACTIONS_IN_APP_FIELDS = %i[sub_mchid description out_trade_no notify_url amount].freeze # :nodoc:
       #
       # App下单
       #
@@ -73,8 +69,6 @@ module WechatPay
       #
       # ```
       # params = {
-      #   sp_appid: 'Your appid',
-      #   sp_mchid: 'Your mchid',
       #   description: 'pay',
       #   out_trade_no: 'Order Number',
       #   payer: {
@@ -93,7 +87,7 @@ module WechatPay
         transactions_method_by_suffix('app', params)
       end
 
-      INVOKE_TRANSACTIONS_IN_H5_FIELDS = %i[sp_appid sp_mchid sub_mchid description out_trade_no notify_url amount].freeze # :nodoc:
+      INVOKE_TRANSACTIONS_IN_H5_FIELDS = %i[sub_mchid description out_trade_no notify_url amount].freeze # :nodoc:
       #
       # h5下单
       #
@@ -103,8 +97,6 @@ module WechatPay
       #
       # ``` ruby
       # params = {
-      #   sp_appid: 'Your appid',
-      #   sp_mchid: 'Your mchid',
       #   description: 'pay',
       #   out_trade_no: 'Order Number',
       #   payer: {
@@ -194,6 +186,11 @@ module WechatPay
       def transactions_method_by_suffix(suffix, params)
         url = "/v3/pay/partner/transactions/#{suffix}"
         method = 'POST'
+
+        params = params.merge({
+                                sp_appid: WechatPay.app_id,
+                                sp_mchid: WechatPay.mch_id
+                              })
 
         payload_json = params.to_json
 
