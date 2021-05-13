@@ -2,7 +2,7 @@
 
 require 'active_support/concern'
 
-module WechatPayHelper
+module WechatPayHelper # :nodoc:
   GATEWAY_URL = 'https://api.mch.weixin.qq.com'
 
   extend ActiveSupport::Concern

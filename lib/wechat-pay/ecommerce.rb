@@ -13,6 +13,11 @@ require 'wechat-pay/ecommerce/refund'
 require 'wechat-pay/ecommerce/bill'
 
 module WechatPay
+  # # 服务商相关接口封装（电商平台，服务商有许多接口共用）
+  # 文档: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/open/pay/chapter3_3_3.shtml
+  #
+  # PS: 电商收付通的所有接口已经封装完毕，有需要再补充。
+  #
   module Ecommerce
     include WechatPayHelper
 
