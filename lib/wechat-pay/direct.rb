@@ -2,10 +2,256 @@ require 'json'
 require 'wechat-pay/helper'
 
 module WechatPay
+  # # 直连商户相关接口封装（常用的已有，待完善）
+  # 文档: https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_1_1.shtml
   module Direct
     include WechatPayHelper
 
     class<<self
+      INVOKE_COMBINE_TRANSACTIONS_IN_APP_FIELDS = %i[combine_out_trade_no scene_info sub_orders notify_url].freeze # :nodoc:
+      #
+      # 直连合单app下单
+      #
+      # TODO: 与电商平台类似，只是参数不同，稍后重构
+      #
+      # Document: https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_1.shtml
+      #
+      # Example:
+      #
+      # ``` ruby
+      # params = {
+      #   combine_out_trade_no: 'combine_out_trade_no',
+      #   combine_payer_info: {
+      #     openid: 'client open id'
+      #   },
+      #   sub_orders: [
+      #     {
+      #       mchid: 'mchid',
+      #       sub_mchid: 'sub mchid',
+      #       attach: 'attach',
+      #       amount: {
+      #         total_amount: 100,
+      #         currency: 'CNY'
+      #       },
+      #       out_trade_no: 'out_trade_no',
+      #       description: 'description'
+      #     }
+      #   ],
+      #   notify_url: 'the_url'
+      # }
+      #
+      # WechatPay::Direct.invoke_combine_transactions_in_app(params)
+      # ```
+      def invoke_combine_transactions_in_app(params)
+        WechatPay::Ecommerce.invoke_combine_transactions_in_app(params)
+      end
+
+      INVOKE_COMBINE_TRANSACTIONS_IN_JS_FIELDS = %i[combine_out_trade_no scene_info sub_orders notify_url].freeze # :nodoc:
+      #
+      # 直连合单js下单
+      #
+      # TODO: 与电商平台类似，只是参数不同，稍后重构
+      #
+      # Document: https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_3.shtml
+      #
+      # Example:
+      #
+      # ``` ruby
+      # params = {
+      #   combine_out_trade_no: 'combine_out_trade_no',
+      #   combine_payer_info: {
+      #     openid: 'client open id'
+      #   },
+      #   sub_orders: [
+      #     {
+      #       mchid: 'mchid',
+      #       sub_mchid: 'sub mchid',
+      #       attach: 'attach',
+      #       amount: {
+      #         total_amount: 100,
+      #         currency: 'CNY'
+      #       },
+      #       out_trade_no: 'out_trade_no',
+      #       description: 'description'
+      #     }
+      #   ],
+      #   notify_url: 'the_url'
+      # }
+      #
+      # WechatPay::Direct.invoke_combine_transactions_in_js(params)
+      # ```
+      def invoke_combine_transactions_in_js(params)
+        WechatPay::Ecommerce.invoke_combine_transactions_in_js(params)
+      end
+
+      INVOKE_COMBINE_TRANSACTIONS_IN_H5_FIELDS = %i[combine_out_trade_no scene_info sub_orders notify_url].freeze # :nodoc:
+      #
+      # 直连合单h5下单
+      #
+      # TODO: 与电商平台类似，只是参数不同，稍后重构
+      #
+      # Document: https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_2.shtml
+      #
+      # Example:
+      #
+      # ``` ruby
+      # params = {
+      #   combine_out_trade_no: 'combine_out_trade_no',
+      #   sub_orders: [
+      #     {
+      #       mchid: 'mchid',
+      #       sub_mchid: 'sub mchid',
+      #       attach: 'attach',
+      #       amount: {
+      #         total_amount: 100,
+      #         currency: 'CNY'
+      #       },
+      #       out_trade_no: 'out_trade_no',
+      #       description: 'description'
+      #     }
+      #   ],
+      #   notify_url: 'the_url'
+      # }
+      #
+      # WechatPay::Direct.invoke_combine_transactions_in_h5(params)
+      # ```
+      def invoke_combine_transactions_in_h5(params)
+        WechatPay::Ecommerce.invoke_combine_transactions_in_h5(params)
+      end
+
+      INVOKE_COMBINE_TRANSACTIONS_IN_MINIPROGRAM_FIELDS = %i[combine_out_trade_no scene_info sub_orders notify_url].freeze # :nodoc:
+      #
+      # 直连合单小程序下单
+      #
+      # TODO: 与电商平台类似，只是参数不同，稍后重构
+      #
+      # Document: https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_4.shtml
+      #
+      # Example:
+      #
+      # ``` ruby
+      # params = {
+      #   combine_out_trade_no: 'combine_out_trade_no',
+      #   combine_payer_info: {
+      #     openid: 'client open id'
+      #   },
+      #   sub_orders: [
+      #     {
+      #       mchid: 'mchid',
+      #       sub_mchid: 'sub mchid',
+      #       attach: 'attach',
+      #       amount: {
+      #         total_amount: 100,
+      #         currency: 'CNY'
+      #       },
+      #       out_trade_no: 'out_trade_no',
+      #       description: 'description'
+      #     }
+      #   ],
+      #   notify_url: 'the_url'
+      # }
+      #
+      # WechatPay::Direct.invoke_combine_transactions_in_miniprogram(params)
+      # ```
+      def invoke_combine_transactions_in_miniprogram(params)
+        WechatPay::Ecommerce.invoke_combine_transactions_in_miniprogram(params)
+      end
+
+      INVOKE_COMBINE_TRANSACTIONS_IN_NATIVE_FIELDS = %i[combine_out_trade_no scene_info sub_orders notify_url].freeze # :nodoc:
+      #
+      # 直连合单native下单
+      #
+      # TODO: 与电商平台类似，只是参数不同，稍后重构
+      #
+      # Document: https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter5_1_5.shtml
+      #
+      # Example:
+      #
+      # ``` ruby
+      # params = {
+      #   combine_out_trade_no: 'combine_out_trade_no',
+      #   sub_orders: [
+      #     {
+      #       mchid: 'mchid',
+      #       sub_mchid: 'sub mchid',
+      #       attach: 'attach',
+      #       amount: {
+      #         total_amount: 100,
+      #         currency: 'CNY'
+      #       },
+      #       out_trade_no: 'out_trade_no',
+      #       description: 'description'
+      #     }
+      #   ],
+      #   notify_url: 'the_url'
+      # }
+      #
+      # WechatPay::Direct.invoke_combine_transactions_in_native(params)
+      # ```
+      def invoke_combine_transactions_in_native(params)
+        WechatPay::Ecommerce.invoke_combine_transactions_in_native(params)
+      end
+
+      QUERY_COMBINE_ORDER_FIELDS = %i[combine_out_trade_no].freeze # :nodoc:
+      #
+      # 合单查询
+      #
+      # TODO: 与电商平台相同，稍后重构
+      #
+      # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_3_11.shtml
+      #
+      # ``` ruby
+      # WechatPay::Direct.query_order(combine_out_trade_no: 'C202104302474')
+      # ```
+      #
+      def query_combine_order(params)
+        combine_out_trade_no = params.delete(:combine_out_trade_no)
+
+        url = "/v3/combine-transactions/out-trade-no/#{combine_out_trade_no}"
+
+        method = 'GET'
+
+        make_request(
+          method: method,
+          path: url,
+          extra_headers: {
+            'Content-Type' => 'application/x-www-form-urlencoded'
+          }
+        )
+      end
+
+      CLOSE_COMBINE_ORDER_FIELDS = %i[combine_out_trade_no sub_orders].freeze # :nodoc:
+      #
+      # 关闭合单
+      #
+      # TODO: 与电商平台相同，稍后重构
+      #
+      # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_3_11.shtml
+      #
+      # ``` ruby
+      # WechatPay::Direct.close_combine_order(combine_out_trade_no: 'C202104302474')
+      # ```
+      def close_combine_order(params)
+        combine_out_trade_no = params.delete(:combine_out_trade_no)
+
+        url = "/v3/combine-transactions/out-trade-no/#{combine_out_trade_no}/close"
+
+        payload = {
+          combine_appid: WechatPay.app_id
+        }.merge(params)
+
+        payload_json = payload.to_json
+
+        method = 'POST'
+
+        make_request(
+          method: method,
+          for_sign: payload_json,
+          payload: payload_json,
+          path: url
+        )
+      end
+
       INVOKE_TRANSACTIONS_IN_JS_FIELDS = %i[description out_trade out_trade_no payer amount notify_url].freeze # :nodoc:
       #
       # 直连js下单

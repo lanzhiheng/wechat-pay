@@ -6,6 +6,11 @@ require 'securerandom'
 require 'active_support/core_ext/hash'
 
 module WechatPay
+  # # 微信签名相关的封装
+  # 文档: https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay4_0.shtml
+  #
+  # PS: 提供了常用的帮助方法，方便您的开发
+  #
   module Sign
     class<<self
       # Generate payment params with appid and prepay_id for invoking the wechat pay.
