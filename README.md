@@ -34,7 +34,7 @@ Create `config/initializer/wechat_pay.rb`and put following configurations into i
 WechatPay.apiclient_key = File.read('apiclient_key.pem')
 WechatPay.platform_cert = File.read('platform_cert.pem')
 WechatPay.apiclient_cert = File.read('apiclient_cert.pem')
-WechatPay.appid = 'Your App Id'
+WechatPay.app_id = 'Your App Id'
 WechatPay.mch_id = 'Your Mch Id'
 WechatPay.mch_key = 'Your Mch Key'
 ```

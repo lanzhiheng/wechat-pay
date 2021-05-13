@@ -12,8 +12,8 @@ module WechatPay
       # Example:
       #
       # ``` ruby
-      # WechatPay::Ecommerce.invoke_refund(sub_mchid: '1600000', transaction_id: '4323400972202104305131070170', total: 1, refund: 1, description: '退款', out_trade_no: 'P103333', out_refund_no: 'R10000')
-      # WechatPay::Ecommerce.invoke_refund(sub_mchid: '1608977559', total: 1, refund: 1, description: '退款', out_trade_no: 'N202104302474', out_refund_no: 'R10000')
+      # WechatPay::Ecommerce.invoke_refund(sub_mchid: '1600000', transaction_id: '4323400972202104305131070170', total: 1, refund: 1, description: '退款', out_refund_no: 'R10000') # by transaction_id
+      # WechatPay::Ecommerce.invoke_refund(sub_mchid: '1608977559', total: 1, refund: 1, description: '退款', out_trade_no: 'N202104302474', out_refund_no: 'R10000') # by out_trade_no
       # ```
       def invoke_refund(params)
         url = '/v3/ecommerce/refunds/apply'
@@ -26,7 +26,7 @@ module WechatPay
 
         params = params.merge({
                                 amount: amount,
-                                sp_appid: WechatPay.appid
+                                sp_appid: WechatPay.app_id
                               })
 
         make_request(

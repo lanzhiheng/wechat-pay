@@ -19,7 +19,7 @@ module WechatPay
         url = '/v3/ecommerce/profitsharing/orders'
         method = 'POST'
         params = params.merge({
-                                appid: WechatPay.appid
+                                appid: WechatPay.app_id
                               })
 
         payload_json = params.to_json
@@ -182,7 +182,7 @@ module WechatPay
         method = 'POST'
 
         params = params.merge({
-                                appid: WechatPay.appid
+                                appid: WechatPay.app_id
                               })
 
         payload_json = params.to_json
@@ -212,7 +212,7 @@ module WechatPay
         method = 'POST'
 
         params = params.merge({
-                                appid: WechatPay.appid
+                                appid: WechatPay.app_id
                               })
 
         payload_json = params.to_json

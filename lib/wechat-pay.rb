@@ -2,11 +2,12 @@
 
 require 'restclient'
 require 'wechat-pay/sign'
-require 'wechat-pay/ecommerce'
+require 'wechat-pay/direct' # 直连模式
+require 'wechat-pay/ecommerce' # 电商平台
 
 module WechatPay
   class<< self
-    attr_accessor :appid, :mch_id, :mch_key
+    attr_accessor :app_id, :mch_id, :mch_key
     attr_reader :apiclient_key, :apiclient_cert, :platform_cert
 
     def apiclient_key=(key)

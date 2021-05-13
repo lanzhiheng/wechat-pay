@@ -3,93 +3,7 @@
 module WechatPay
   module Ecommerce
     class<<self
-      #
-      #
-      # js或小程序合单
-      # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_3_3.shtml
-      # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_3_4.shtml
-      #
-      # Example:
-      # params = {
-      #   combine_appid: 'Your appid',
-      #   combine_mchid: 'Your mchid',
-      #   combine_out_trade_no: 'combine_out_trade_no',
-      #   combine_payer_info: {
-      #     openid: 'client open id'
-      #   },
-      #   sub_orders: [
-      #     {
-      #       mchid: 'mchid',
-      #       sub_mchid: 'sub mchid',
-      #       attach: 'attach',
-      #       amount: {
-      #         total_amount: 100,
-      #         currency: 'CNY'
-      #       },
-      #       out_trade_no: 'out_trade_no',
-      #       description: 'description'
-      #     }
-      #   ]
-      #   notify_url: 'the_url'
-      # }
-      #
-      # WechatPay::Ecommerce.invoke_combine_transactions_in_js(params)
-      # Or
-      # WechatPay::Ecommerce.invoke_combine_transactions_in_miniprogram(params)
-      #
-      # h5合单
-      # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_3_2.shtml
-      #
-      # Example:
-      # params = {
-      #   combine_appid: 'Your appid',
-      #   combine_mchid: 'Your mchid',
-      #   combine_out_trade_no: 'combine_out_trade_no',
-      #   sub_orders: [
-      #     {
-      #       mchid: 'mchid',
-      #       sub_mchid: 'sub mchid',
-      #       attach: 'attach',
-      #       amount: {
-      #         total_amount: 100,
-      #         currency: 'CNY'
-      #       },
-      #       out_trade_no: 'out_trade_no',
-      #       description: 'description'
-      #     }
-      #   ]
-      #   notify_url: 'the_url'
-      # }
-      #
-      # WechatPay::Ecommerce.invoke_combine_transactions_in_h5(params)
-      #
-      # native合单
-      # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_3_5.shtml
-      #
-      # Example:
-      # params = {
-      #   combine_appid: 'Your appid',
-      #   combine_mchid: 'Your mchid',
-      #   combine_out_trade_no: 'combine_out_trade_no',
-      #   sub_orders: [
-      #     {
-      #       mchid: 'mchid',
-      #       sub_mchid: 'sub mchid',
-      #       attach: 'attach',
-      #       amount: {
-      #         total_amount: 100,
-      #         currency: 'CNY'
-      #       },
-      #       out_trade_no: 'out_trade_no',
-      #       description: 'description'
-      #     }
-      #   ]
-      #   notify_url: 'the_url'
-      # }
-      #
-      # WechatPay::Ecommerce.invoke_combine_transactions_in_native(params)
-
-      INVOKE_COMBINE_TRANSACTIONS_IN_NATIVE_FIELDS = %i[combine_appid combine_mchid combine_out_trade_no combine_payer_info sub_orders notify_url].freeze # :nodoc:
+      INVOKE_COMBINE_TRANSACTIONS_IN_NATIVE_FIELDS = %i[combine_out_trade_no combine_payer_info sub_orders notify_url].freeze # :nodoc:
       #
       # native合单
       #
@@ -99,8 +13,6 @@ module WechatPay
       #
       # ``` ruby
       # params = {
-      #   combine_appid: 'Your appid',
-      #   combine_mchid: 'Your mchid',
       #   combine_out_trade_no: 'combine_out_trade_no',
       #   combine_payer_info: {
       #     openid: 'client open id'
@@ -127,8 +39,7 @@ module WechatPay
         combine_transactions_method_by_suffix('native', params)
       end
 
-      INVOKE_COMBINE_TRANSACTIONS_IN_H5_FIELDS = %i[combine_appid combine_mchid combine_out_tra
-de_no combine_payer_info sub_orders notify_url].freeze # :nodoc:
+      INVOKE_COMBINE_TRANSACTIONS_IN_H5_FIELDS = %i[combine_out_trade_no combine_payer_info sub_orders notify_url].freeze # :nodoc:
       #
       # h5合单
       #
@@ -138,8 +49,6 @@ de_no combine_payer_info sub_orders notify_url].freeze # :nodoc:
       #
       # ``` ruby
       # params = {
-      #   combine_appid: 'Your appid',
-      #   combine_mchid: 'Your mchid',
       #   combine_out_trade_no: 'combine_out_trade_no',
       #   combine_payer_info: {
       #     openid: 'client open id'
@@ -166,7 +75,7 @@ de_no combine_payer_info sub_orders notify_url].freeze # :nodoc:
         combine_transactions_method_by_suffix('h5', params)
       end
 
-      INVOKE_COMBINE_TRANSACTIONS_IN_APP_FIELDS = %i[combine_appid combine_mchid combine_out_trade_no combine_payer_info sub_orders notify_url].freeze # :nodoc:
+      INVOKE_COMBINE_TRANSACTIONS_IN_APP_FIELDS = %i[combine_out_trade_no combine_payer_info sub_orders notify_url].freeze # :nodoc:
       #
       # app合单
       #
@@ -176,8 +85,6 @@ de_no combine_payer_info sub_orders notify_url].freeze # :nodoc:
       #
       # ``` ruby
       # params = {
-      #   combine_appid: 'Your appid',
-      #   combine_mchid: 'Your mchid',
       #   combine_out_trade_no: 'combine_out_trade_no',
       #   combine_payer_info: {
       #     openid: 'client open id'
@@ -204,7 +111,7 @@ de_no combine_payer_info sub_orders notify_url].freeze # :nodoc:
         combine_transactions_method_by_suffix('app', params)
       end
 
-      INVOKE_COMBINE_TRANSACTIONS_IN_JS_FIELDS = %i[combine_appid combine_mchid combine_out_trade_no combine_payer_info sub_orders notify_url].freeze # :nodoc:
+      INVOKE_COMBINE_TRANSACTIONS_IN_JS_FIELDS = %i[combine_out_trade_no combine_payer_info sub_orders notify_url].freeze # :nodoc:
       #
       # js合单
       #
@@ -214,8 +121,6 @@ de_no combine_payer_info sub_orders notify_url].freeze # :nodoc:
       #
       # ``` ruby
       # params = {
-      #   combine_appid: 'Your appid',
-      #   combine_mchid: 'Your mchid',
       #   combine_out_trade_no: 'combine_out_trade_no',
       #   combine_payer_info: {
       #     openid: 'client open id'
@@ -242,7 +147,7 @@ de_no combine_payer_info sub_orders notify_url].freeze # :nodoc:
         combine_transactions_method_by_suffix('jsapi', params)
       end
 
-      INVOKE_COMBINE_TRANSACTIONS_IN_MINIPROGRAM_FIELDS = %i[combine_appid combine_mchid combine_out_trade_no combine_payer_info sub_orders notify_url].freeze # :nodoc:
+      INVOKE_COMBINE_TRANSACTIONS_IN_MINIPROGRAM_FIELDS = %i[combine_out_trade_no combine_payer_info sub_orders notify_url].freeze # :nodoc:
       #
       # 小程序合单
       #
@@ -252,8 +157,6 @@ de_no combine_payer_info sub_orders notify_url].freeze # :nodoc:
       #
       # ``` ruby
       # params = {
-      #   combine_appid: 'Your appid',
-      #   combine_mchid: 'Your mchid',
       #   combine_out_trade_no: 'combine_out_trade_no',
       #   combine_payer_info: {
       #     openid: 'client open id'
@@ -321,7 +224,7 @@ de_no combine_payer_info sub_orders notify_url].freeze # :nodoc:
         url = "/v3/combine-transactions/out-trade-no/#{combine_out_trade_no}/close"
 
         payload = {
-          combine_appid: WechatPay.appid
+          combine_appid: WechatPay.app_id
         }.merge(params)
 
         payload_json = payload.to_json
@@ -341,6 +244,11 @@ de_no combine_payer_info sub_orders notify_url].freeze # :nodoc:
       def combine_transactions_method_by_suffix(suffix, params)
         url = "/v3/combine-transactions/#{suffix}"
         method = 'POST'
+
+        params = params.merge({
+                                combine_mchid: WechatPay.mch_id,
+                                combine_appid: WechatPay.app_id
+                              })
 
         payload_json = params.to_json
 
