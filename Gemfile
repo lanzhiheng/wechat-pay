@@ -13,6 +13,4 @@ gemspec
 # your gem to rubygems.org.
 
 # To use debugger
-gem 'pry'
-gem 'pry-byebug'
 gem 'rubocop', require: false
