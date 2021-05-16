@@ -4,7 +4,7 @@ A simple Wechat pay ruby gem, without unnecessary magic or wrapper. Just a simpl
 
 Please read official document first: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/pages/index.shtml
 
-If you want check the present public api, you can find them in the [Document](https://lanzhiheng.github.io/wechat-pay.github.io/index.html)。
+If you want check the present public api, you can find them in the [Document](https://www.rubydoc.info/github/lanzhiheng/wechat-pay/master/index)。
 
 Summary:
 
