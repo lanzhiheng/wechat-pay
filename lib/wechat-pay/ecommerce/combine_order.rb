@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module WechatPay
+  # 合并订单相关
   module Ecommerce
     # @private
     # @!macro [attach] define_transaction_method

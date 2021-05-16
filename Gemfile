@@ -13,4 +13,3 @@ gemspec
 # your gem to rubygems.org.
 
 # To use debugger
-gem 'rubocop', require: false

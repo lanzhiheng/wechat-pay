@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module WechatPay
+  # 账单相关
   module Ecommerce
     class<<self
       TRADEBILL_FIELDS = [:bill_date].freeze # :nodoc:

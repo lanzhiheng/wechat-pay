@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-RSpec.describe "WechatPay::Direct" do
-  ['js', 'miniprogram', 'app', 'h5', 'native'].each do |key|
+RSpec.describe 'WechatPay::Direct' do
+  %w[js miniprogram app h5 native].each do |key|
     it "check method invoke_transactions_in_#{key}" do
       result = { code: 200 }
       expect(WechatPay::Direct).to receive(:make_request).with(any_args).and_return(result)
@@ -9,7 +9,7 @@ RSpec.describe "WechatPay::Direct" do
     end
   end
 
-  ['native', 'miniprogram', 'app', 'h5', 'js'].each do |key|
+  %w[native miniprogram app h5 js].each do |key|
     it "check method invoke_combine_transactions_in_#{key}" do
       result = { code: 200 }
       expect(WechatPay::Ecommerce).to receive(:make_request).with(any_args).and_return(result)
