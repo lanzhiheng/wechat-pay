@@ -2,117 +2,43 @@
 
 module WechatPay
   module Ecommerce
-    ##
-    # :singleton-method: invoke_transactions_in_js
-    # js下单
+    # @private
+    # @!macro [attach] define_transaction_method
+    #   $1下单
     #
-    # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_2.shtml
+    #   Document: $3
     #
-    # Example:
+    #   Example:
     #
-    # ```
-    # params = {
-    #   description: 'pay',
-    #   out_trade_no: 'Order Number',
-    #   payer: {
-    #     sp_openid: 'wechat open id'
-    #   },
-    #   amount: {
-    #     total: 10
-    #   },
-    #   sub_mchid: 'Your sub mchid',
-    #   notify_url: 'the url'
-    # }
+    #   ```
+    #   params = {
+    #     description: 'pay',
+    #     out_trade_no: 'Order Number',
+    #     payer: {
+    #       sp_openid: 'wechat open id'
+    #     },
+    #     amount: {
+    #       total: 10
+    #     },
+    #     sub_mchid: 'Your sub mchid',
+    #     notify_url: 'the url'
+    #   }
     #
-    # WechatPay::Ecommerce.invoke_transactions_in_js(params)
-    # ```
-
-    ##
-    # :singleton-method: invoke_transactions_in_app
-    #
-    # App下单
-    #
-    # https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_1.shtml
-    #
-    # Example:
-    #
-    # ```
-    # params = {
-    #   description: 'pay',
-    #   out_trade_no: 'Order Number',
-    #   payer: {
-    #     sp_openid: 'wechat open id'
-    #   },
-    #   amount: {
-    #     total: 10
-    #   },
-    #   sub_mchid: 'Your sub mchid',
-    #   notify_url: 'the url'
-    # }
-    #
-    # WechatPay::Ecommerce.invoke_transactions_in_app(params)
-    # ```
-
-    ##
-    # :singleton-method: invoke_transactions_in_h5
-    #
-    # h5下单
-    #
-    # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_4.shtml
-    #
-    # Example:
-    #
-    # ``` ruby
-    # params = {
-    #   description: 'pay',
-    #   out_trade_no: 'Order Number',
-    #   amount: {
-    #     total: 10
-    #   },
-    #   sub_mchid: 'Your sub mchid',
-    #   notify_url: 'the url'
-    # }
-    #
-    # WechatPay::Ecommerce.invoke_transactions_in_h5(params)
-    # ```
-
-    ##
-    # :singleton-method: invoke_transactions_in_miniprogram
-    #
-    # 小程序下单
-    #
-    # Document:
-    #
-    # Example:
-    #
-    # ```
-    # params = {
-    #   description: 'pay',
-    #   out_trade_no: 'Order Number',
-    #   payer: {
-    #     sp_openid: 'wechat open id'
-    #   },
-    #   amount: {
-    #     total: 10
-    #   },
-    #   sub_mchid: 'Your sub mchid',
-    #   notify_url: 'the url'
-    # }
-    #
-    # WechatPay::Ecommerce.invoke_transactions_in_miniprogram(params)
-    # ```
-    {
-      js: 'jsapi',
-      app: 'app',
-      h5: 'h5',
-      miniprogram: 'jsapi'
-    }.each do |key, value|
-      const_set("INVOKE_TRANSACTIONS_IN_#{key.upcase}_FIELDS",
-                %i[sub_mchid description out_trade_no notify_url amount].freeze)
+    #   WechatPay::Ecommerce.invoke_transactions_in_$1(params)
+    #   ```
+    #   @!method invoke_transactions_in_$1
+    #   @!scope class
+    def self.define_transaction_method(key, value, _document)
+      const_set("INVOKE_TRANSACTIONS_IN_#{key.upcase}_FIELDS", %i[sub_mchid description out_trade_no notify_url amount].freeze)
       define_singleton_method("invoke_transactions_in_#{key}") do |params|
         transactions_method_by_suffix(value, params)
       end
     end
+
+    define_transaction_method('js', 'jsapi', 'https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_2.shtml')
+    define_transaction_method("app", 'app', 'https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_1.shtml')
+    define_transaction_method("h5", 'h5', 'https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_4.shtml')
+    define_transaction_method("miniprogram", 'jsapi', 'https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_3.shtml')
 
     QUERY_ORDER_FIELDS = %i[sub_mchid out_trade_no transaction_id].freeze # :nodoc:
     #

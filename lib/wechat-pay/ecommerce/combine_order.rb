@@ -2,188 +2,53 @@
 
 module WechatPay
   module Ecommerce
-    ##
-    # :singleton-method: invoke_combine_transactions_in_native
+    # @private
+    # @!macro [attach] define_transaction_method
+    #   $1合单
     #
-    # native合单
+    #   Document: $3
     #
-    # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_3_5.shtml
+    #   Example:
     #
-    # Example:
+    #   ``` ruby
+    #   params = {
+    #     combine_out_trade_no: 'combine_out_trade_no',
+    #     combine_payer_info: {
+    #       openid: 'client open id'
+    #     },
+    #     sub_orders: [
+    #       {
+    #         mchid: 'mchid',
+    #         sub_mchid: 'sub mchid',
+    #         attach: 'attach',
+    #         amount: {
+    #           total_amount: 100,
+    #           currency: 'CNY'
+    #         },
+    #         out_trade_no: 'out_trade_no',
+    #         description: 'description'
+    #       }
+    #     ],
+    #     notify_url: 'the_url'
+    #   }
     #
-    # ``` ruby
-    # params = {
-    #   combine_out_trade_no: 'combine_out_trade_no',
-    #   combine_payer_info: {
-    #     openid: 'client open id'
-    #   },
-    #   sub_orders: [
-    #     {
-    #       mchid: 'mchid',
-    #       sub_mchid: 'sub mchid',
-    #       attach: 'attach',
-    #       amount: {
-    #         total_amount: 100,
-    #         currency: 'CNY'
-    #       },
-    #       out_trade_no: 'out_trade_no',
-    #       description: 'description'
-    #     }
-    #   ],
-    #   notify_url: 'the_url'
-    # }
-    #
-    # WechatPay::Ecommerce.invoke_combine_transactions_in_native(params)
-    # ```
-
-    ##
-    # :singleton-method: invoke_combine_transactions_in_h5
-    #
-    # h5合单
-    #
-    # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_3_2.shtml
-    #
-    # Example:
-    #
-    # ``` ruby
-    # params = {
-    #   combine_out_trade_no: 'combine_out_trade_no',
-    #   combine_payer_info: {
-    #     openid: 'client open id'
-    #   },
-    #   sub_orders: [
-    #     {
-    #       mchid: 'mchid',
-    #       sub_mchid: 'sub mchid',
-    #       attach: 'attach',
-    #       amount: {
-    #         total_amount: 100,
-    #         currency: 'CNY'
-    #       },
-    #       out_trade_no: 'out_trade_no',
-    #       description: 'description'
-    #     }
-    #   ],
-    #   notify_url: 'the_url'
-    # }
-    #
-    # WechatPay::Ecommerce.invoke_combine_transactions_in_h5(params)
-    # ```
-
-    ##
-    # :singleton-method: invoke_combine_transactions_in_app
-    #
-    # app合单
-    #
-    # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_3_1.shtml
-    #
-    # Example:
-    #
-    # ``` ruby
-    # params = {
-    #   combine_out_trade_no: 'combine_out_trade_no',
-    #   combine_payer_info: {
-    #     openid: 'client open id'
-    #   },
-    #   sub_orders: [
-    #     {
-    #       mchid: 'mchid',
-    #       sub_mchid: 'sub mchid',
-    #       attach: 'attach',
-    #       amount: {
-    #         total_amount: 100,
-    #         currency: 'CNY'
-    #       },
-    #       out_trade_no: 'out_trade_no',
-    #       description: 'description'
-    #     }
-    #   ],
-    #   notify_url: 'the_url'
-    # }
-    #
-    # WechatPay::Ecommerce.invoke_combine_transactions_in_app(params)
-    # ```
-
-    ##
-    # :singleton-method: invoke_combine_transactions_in_app
-    #
-    # js合单
-    #
-    # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_3_3.shtml
-    #
-    # Example:
-    #
-    # ``` ruby
-    # params = {
-    #   combine_out_trade_no: 'combine_out_trade_no',
-    #   combine_payer_info: {
-    #     openid: 'client open id'
-    #   },
-    #   sub_orders: [
-    #     {
-    #       mchid: 'mchid',
-    #       sub_mchid: 'sub mchid',
-    #       attach: 'attach',
-    #       amount: {
-    #         total_amount: 100,
-    #         currency: 'CNY'
-    #       },
-    #       out_trade_no: 'out_trade_no',
-    #       description: 'description'
-    #     }
-    #   ],
-    #   notify_url: 'the_url'
-    # }
-    #
-    # WechatPay::Ecommerce.invoke_combine_transactions_in_js(params)
-    # ```
-
-    ##
-    # :singleton-method: invoke_combine_transactions_in_miniprogram
-    #
-    # 小程序合单
-    #
-    # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_3_4.shtml
-    #
-    # Example:
-    #
-    # ``` ruby
-    # params = {
-    #   combine_out_trade_no: 'combine_out_trade_no',
-    #   combine_payer_info: {
-    #     openid: 'client open id'
-    #   },
-    #   sub_orders: [
-    #     {
-    #       mchid: 'mchid',
-    #       sub_mchid: 'sub mchid',
-    #       attach: 'attach',
-    #       amount: {
-    #         total_amount: 100,
-    #         currency: 'CNY'
-    #       },
-    #       out_trade_no: 'out_trade_no',
-    #       description: 'description'
-    #     }
-    #   ],
-    #   notify_url: 'the_url'
-    # }
-    #
-    # WechatPay::Ecommerce.invoke_combine_transactions_in_miniprogram(params)
-    # ```
-    {
-      js: 'jsapi',
-      app: 'app',
-      h5: 'h5',
-      native: 'native',
-      miniprogram: 'jsapi'
-    }.each do |key, value|
+    #   WechatPay::Ecommerce.invoke_combine_transactions_in_$1(params)
+    #   ```
+    #   @!method invoke_combine_transactions_in_$1
+    #   @!scope class
+    def self.define_combine_transaction_method(key, value, _document)
       const_set("INVOKE_COMBINE_TRANSACTIONS_IN_#{key.upcase}_FIELDS",
                 %i[combine_out_trade_no combine_payer_info sub_orders notify_url].freeze)
       define_singleton_method("invoke_combine_transactions_in_#{key}") do |params|
         combine_transactions_method_by_suffix(value, params)
       end
     end
+
+    define_combine_transaction_method('js', 'jsapi', 'https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_3_3.shtml')
+    define_combine_transaction_method('h5', 'h5', 'https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_3_2.shtml')
+    define_combine_transaction_method('native', 'native', 'https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_3_5.shtml')
+    define_combine_transaction_method('app', 'app', 'https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_3_1.shtml')
+    define_combine_transaction_method('miniprogram', 'jsapi', 'https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_3_4.shtml')
 
     QUERY_COMBINE_ORDER_FIELDS = %i[combine_out_trade_no].freeze # :nodoc:
     #
