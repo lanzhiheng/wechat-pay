@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 require 'wechat-pay/helper'
 
@@ -35,7 +37,8 @@ module WechatPay
     #   @!method invoke_transactions_in_$1
     #   @!scope class
     def self.define_transaction_method(key, value, _document)
-      const_set("INVOKE_TRANSACTIONS_IN_#{key.upcase}_FIELDS", %i[description out_trade out_trade_no payer amount notify_url].freeze)
+      const_set("INVOKE_TRANSACTIONS_IN_#{key.upcase}_FIELDS",
+                %i[description out_trade out_trade_no payer amount notify_url].freeze)
       define_singleton_method "invoke_transactions_in_#{key}" do |params|
         direct_transactions_method_by_suffix(value, params)
       end
@@ -46,7 +49,6 @@ module WechatPay
     define_transaction_method('app', 'app', 'https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_1.shtml')
     define_transaction_method('h5', 'h5', 'https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_3_1.shtml')
     define_transaction_method('native', 'native', 'https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_4_1.shtml')
-
 
     # @private
     # @!macro [attach] define_combine_transaction_method

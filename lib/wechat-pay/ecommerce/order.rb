@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module WechatPay
+  # 订单相关
   module Ecommerce
     # @private
     # @!macro [attach] define_transaction_method
@@ -29,16 +30,17 @@ module WechatPay
     #   @!method invoke_transactions_in_$1
     #   @!scope class
     def self.define_transaction_method(key, value, _document)
-      const_set("INVOKE_TRANSACTIONS_IN_#{key.upcase}_FIELDS", %i[sub_mchid description out_trade_no notify_url amount].freeze)
+      const_set("INVOKE_TRANSACTIONS_IN_#{key.upcase}_FIELDS",
+                %i[sub_mchid description out_trade_no notify_url amount].freeze)
       define_singleton_method("invoke_transactions_in_#{key}") do |params|
         transactions_method_by_suffix(value, params)
       end
     end
 
     define_transaction_method('js', 'jsapi', 'https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_2.shtml')
-    define_transaction_method("app", 'app', 'https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_1.shtml')
-    define_transaction_method("h5", 'h5', 'https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_4.shtml')
-    define_transaction_method("miniprogram", 'jsapi', 'https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_3.shtml')
+    define_transaction_method('app', 'app', 'https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_1.shtml')
+    define_transaction_method('h5', 'h5', 'https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_4.shtml')
+    define_transaction_method('miniprogram', 'jsapi', 'https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_3.shtml')
 
     QUERY_ORDER_FIELDS = %i[sub_mchid out_trade_no transaction_id].freeze # :nodoc:
     #

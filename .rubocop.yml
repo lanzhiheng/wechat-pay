@@ -1,0 +1,21 @@
+AllCops:
+  NewCops: enable
+  SuggestExtensions: false
+
+Style/AsciiComments:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 30
+
+Layout/LineLength:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Max: 200

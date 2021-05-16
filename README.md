@@ -62,7 +62,7 @@ def download_certificate
   download_path = 'Your Download Path'
   raise '必须提供证书下载路径' if download_path.blank?
 
-  response = WechatPay::Ecommerce.get_certificates
+  response = WechatPay::Ecommerce.certificates
 
   raise '证书下载失败' unless response.code == 200
 

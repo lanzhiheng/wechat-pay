@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe "WechatPay::Sign" do
+RSpec.describe 'WechatPay::Sign' do
   before do
     @wechat_platform_key = OpenSSL::PKey::RSA.new(File.read('spec/fixtures/random_platform_key.pem'))
   end
@@ -32,7 +32,7 @@ RSpec.describe "WechatPay::Sign" do
     authorization_header = WechatPay::Sign.build_authorization_header('GET', '/v3/api/wechat_pay',
                                                                       { name: 'Ruby' }.to_json)
     expected_string = format(
-      'WECHATPAY2-SHA256-RSA2048 mchid="%{mchid}",nonce_str="%{hex}",serial_no="%{serial_no}",signature="b61tFFRwxJgzO+QeTHiRxxiOpniZCK2cwUtnBEE7QVe06k3tNjfIaXtrOOSc3Gr84mx9xlQePM7s2cf1B3ixYKnvcJiTNnUsQwU9omyyUSjO1YIdwQTrra1r6+VUmM7pAq1eowa/WQhvAP2QkG2J4ienMwNtVuHb4Tw7X1R7LSh2/DEl+LmYCtEd7Acc4AMFyLE/rqdN19fdO+ZSTpVy0rTDMSsgpCACP8Xi7lQFyej9Gb72XYq0oHelWpCSyIRoWm7214ck76ytcgPIe15jOpLYO+L2cYf5VSMPAJ9neX45udpBuYXJWC6NchHko/HNN473zlNqOb6gCqwugzkvNg==",timestamp="%{timestamp}"', timestamp: timestamp.to_i, mchid: WechatPay.mch_id, hex: hex, serial_no: WechatPay.apiclient_serial_no
+      'WECHATPAY2-SHA256-RSA2048 mchid="%<mchid>s",nonce_str="%<hex>s",serial_no="%<serial_no>s",signature="b61tFFRwxJgzO+QeTHiRxxiOpniZCK2cwUtnBEE7QVe06k3tNjfIaXtrOOSc3Gr84mx9xlQePM7s2cf1B3ixYKnvcJiTNnUsQwU9omyyUSjO1YIdwQTrra1r6+VUmM7pAq1eowa/WQhvAP2QkG2J4ienMwNtVuHb4Tw7X1R7LSh2/DEl+LmYCtEd7Acc4AMFyLE/rqdN19fdO+ZSTpVy0rTDMSsgpCACP8Xi7lQFyej9Gb72XYq0oHelWpCSyIRoWm7214ck76ytcgPIe15jOpLYO+L2cYf5VSMPAJ9neX45udpBuYXJWC6NchHko/HNN473zlNqOb6gCqwugzkvNg==",timestamp="%<timestamp>s"', timestamp: timestamp.to_i, mchid: WechatPay.mch_id, hex: hex, serial_no: WechatPay.apiclient_serial_no
     )
     expect(authorization_header).to eq(expected_string)
   end

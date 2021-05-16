@@ -1,3 +1,5 @@
+# rubocop:disable Naming/FileName
+
 # frozen_string_literal: true
 
 require 'restclient'
@@ -8,7 +10,6 @@ require 'wechat-pay/ecommerce' # 电商平台
 # # 微信支付
 #
 # 设置关键信息
-
 module WechatPay
   class<< self
     attr_accessor :app_id, :mch_id, :mch_key
@@ -40,3 +41,4 @@ module WechatPay
     end
   end
 end
+# rubocop:enable Naming/FileName
