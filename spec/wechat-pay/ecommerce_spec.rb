@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe 'WechatPay::Ecommerce' do
-  %w[js miniprogram app h5].each do |key|
+  %w[js miniprogram app h5 native].each do |key|
     it "check method invoke_transactions_in_#{key}" do
       result = { code: 200 }
       expect(WechatPay::Ecommerce).to receive(:make_request).with(any_args).and_return(result)
