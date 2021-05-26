@@ -1,5 +1,9 @@
 # Next Release
 
+## 1.0.8 (05/26/2021)
+
+* Add api `invoke_transactions_in_native` to `WechatPay::Ecommerce`
+
 ## 1.0.7 (05/16/2021)
 
 * Change `WechatPay::Ecommerce.get_certificates` to `WechatPay::Ecommerce.certificates`
