@@ -16,7 +16,8 @@ module WechatPayHelper # :nodoc:
       authorization = WechatPay::Sign.build_authorization_header(method, path, for_sign)
       headers = {
         'Authorization' => authorization,
-        'Content-Type' => 'application/json'
+        'Content-Type' => 'application/json',
+        'Accept-Encoding' => 'gzip'
       }.merge(extra_headers)
 
       RestClient::Request.execute(
