@@ -17,7 +17,7 @@ module WechatPayHelper # :nodoc:
       headers = {
         'Authorization' => authorization,
         'Content-Type' => 'application/json',
-        'Accept-Encoding' => 'gzip'
+        'Accept-Encoding' => '*'
       }.merge(extra_headers)
 
       RestClient::Request.execute(
