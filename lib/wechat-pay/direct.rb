@@ -352,10 +352,10 @@ module WechatPay
         url = "/v3/pay/transactions/#{suffix}"
         method = 'POST'
 
-        params = params.merge({
-                                mchid: WechatPay.mch_id,
-                                appid: WechatPay.app_id
-                              })
+        params = {
+          mchid: WechatPay.mch_id,
+          appid: WechatPay.app_id
+        }.merge(params)
 
         payload_json = params.to_json
 

@@ -24,10 +24,10 @@ module WechatPay
         currency: 'CNY'
       }
 
-      params = params.merge({
-                              amount: amount,
-                              sp_appid: WechatPay.app_id
-                            })
+      params = {
+        amount: amount,
+        sp_appid: WechatPay.app_id
+      }.merge(params)
 
       make_request(
         path: url,
