@@ -3,7 +3,7 @@
 module WechatPay
   # 账单相关
   module Ecommerce
-    class<<self
+    class << self
       TRADEBILL_FIELDS = [:bill_date].freeze # :nodoc:
       #
       # 申请交易账单

@@ -7,7 +7,21 @@ RSpec.describe 'WechatPay::Sign' do
     @wechat_platform_key = OpenSSL::PKey::RSA.new(File.read('spec/fixtures/random_platform_key.pem'))
   end
 
-  it 'generate payment params from prepay id and appid' do
+  it 'generate miniprogramming payment params from prepay id and appid' do
+    timestamp = Time.at(1_600_000)
+    hex = 'hhhhhhhhh'
+    appid = 'wx18802234'
+    prepay_id = 'prepay_id'
+
+    expect(Time).to receive(:now).with(any_args).and_return(timestamp)
+    expect(SecureRandom).to receive(:hex).with(any_args).and_return(hex)
+
+    params = WechatPay::Sign.generate_app_payment_params_from_prepay_id_and_appid(appid, prepay_id)
+    result = { 'partnerId' => WechatPay.mch_id, 'appId' => appid, 'packageValue' => 'Sign=WXPay', 'timeStamp' => '1600000', 'nonceStr' => 'hhhhhhhhh', 'prepayId' => prepay_id, 'sign' => 'iGxYj/P4E4PG8bnCmLWCXn4sRxumpPY2d7Z6LuRvHPgTh7vB61d/fS9jGKBLooqxRUpS0of6egMVGmbNKa1tYj028P5AGIdfkfdIQcYpL9gHTvDfW0abZ1GK+79HtlcHXkuwJS6E8N1Q/ZliG9csCzB5AwzW40PGilDWzMzfkycvQkcuR0jhLx+RWMWFU1SupBqogT7KwX0En1956zKM0lRWMpclvH8BWqGgMxuFOy0pUCjYGSyUtlaP42p8vL+WLyw/JT70QQsmRCnCYAi8l7uSq3YKRc7JTA7WBmkrhU8lvNbyCz7YmIOspkWMgyBPuX5qjcl0EGhHZy3EDq6/Dg==' }
+    expect(params).to eq(result)
+  end
+
+  it 'generate miniprogramming payment params from prepay id and appid' do
     timestamp = Time.at(1_600_000)
     hex = 'hhhhhhhhh'
     appid = 'wx18802234'

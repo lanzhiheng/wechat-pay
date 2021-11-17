@@ -12,10 +12,52 @@ module WechatPay
   # PS: 提供了常用的帮助方法，方便您的开发
   #
   module Sign
-    class<<self
-      # Generate payment params with appid and prepay_id for invoking the wechat pay.
+    class << self
+      # Generate payment params with appid and prepay_id for invoking the wechat pay in app
       #
       # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_7.shtml
+      #
+      # Take app for example
+      #
+      # ``` ruby
+      # appid = 'appid for mobile'
+      #
+      # params = {
+      #   sp_appid: 'Your appid',
+      #   sp_mchid: 'Your mchid',
+      #   description: 'pay',
+      #   out_trade_no: 'Order Number',
+      #   amount: {
+      #     total: 10
+      #   },
+      #   sub_mchid: 'Your sub mchid',
+      #   notify_url: 'the url'
+      # }
+      # result = WechatPay::Ecommerce.invoke_transactions_in_app(params).body
+      # # => { prepay_id => 'wx201410272009395522657a690389285100' }
+      # prepay_id = result['prepay_id']
+      # WechatPay::Sign.generate_app_payment_params_from_prepay_id_and_appid(appid, prepay_id)
+      # # => params for invoking the wechat pay in app
+      # ```
+
+      def generate_app_payment_params_from_prepay_id_and_appid(appid, prepay_id)
+        timestamp = Time.now.to_i.to_s
+        noncestr = SecureRandom.hex
+        string = build_app_paysign_string(appid, timestamp, noncestr, prepay_id)
+
+        {
+          appId: appid,
+          partnerId: WechatPay.mch_id,
+          timeStamp: timestamp,
+          nonceStr: noncestr,
+          prepayId: prepay_id,
+          packageValue: 'Sign=WXPay',
+          sign: sign_string(string)
+        }.stringify_keys
+      end
+
+      # Generate payment params with appid and prepay_id for invoking the wechat pay in miniprogram
+      #
       #
       # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter7_2_8.shtml
       #
@@ -40,21 +82,11 @@ module WechatPay
       #   sub_mchid: 'Your sub mchid',
       #   notify_url: 'the url'
       # }
-      # result = WechatPay::Ecommerce.invoke_transactions_in_app(params).body
+      # result = WechatPay::Ecommerce.invoke_transactions_in_miniprogram(params).body
       # # => { prepay_id => 'wx201410272009395522657a690389285100' }
       # prepay_id = result['prepay_id']
       # WechatPay::Sign.generate_payment_params_from_prepay_id_and_appid(appid, prepay_id)
       # # => params for invoking the wechat pay in miniprogram
-      # ```
-      #
-      # Miniprogram and js process are similar, just get the prepay_id by method
-      #
-      # ``` ruby
-      # result = WechatPay::Ecommerce.invoke_transactions_in_js(params_for_miniprogram)
-      # # => { prepay_id => 'wx201410272009395522657a690389285100' }
-      # prepay_id = result['prepay_id']
-      # WechatPay::Sign.generate_payment_params_from_prepay_id_and_appid(appid, prepay_id)
-      # # => params for invoking the wechat pay in miniprogram or js
       # ```
       def generate_payment_params_from_prepay_id_and_appid(appid, prepay_id)
         timestamp = Time.now.to_i.to_s
@@ -203,6 +235,10 @@ module WechatPay
 
       def build_paysign_string(appid, timestamp, noncestr, prepayid)
         "#{appid}\n#{timestamp}\n#{noncestr}\nprepay_id=#{prepayid}\n"
+      end
+
+      def build_app_paysign_string(appid, timestamp, noncestr, prepayid)
+        "#{appid}\n#{timestamp}\n#{noncestr}\n#{prepayid}\n"
       end
     end
   end

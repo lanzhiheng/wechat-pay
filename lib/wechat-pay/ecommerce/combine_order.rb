@@ -107,7 +107,7 @@ module WechatPay
       )
     end
 
-    class<<self
+    class << self
       private
 
       def combine_transactions_method_by_suffix(suffix, params)
