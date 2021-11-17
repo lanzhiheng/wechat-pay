@@ -82,7 +82,7 @@ module WechatPay
       )
     end
 
-    QUERY_PLATFORM_ENDDAY_BALANCE_FIELDS = %i[account_type date].freeze #:nodoc:
+    QUERY_PLATFORM_ENDDAY_BALANCE_FIELDS = %i[account_type date].freeze # :nodoc:
     #
     # 平台商户日终余额
     #

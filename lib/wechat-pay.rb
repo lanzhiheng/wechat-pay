@@ -11,7 +11,7 @@ require 'wechat-pay/ecommerce' # 电商平台
 #
 # 设置关键信息
 module WechatPay
-  class<< self
+  class << self
     attr_accessor :app_id, :mch_id, :mch_key
     attr_reader :apiclient_key, :apiclient_cert, :platform_cert
 
