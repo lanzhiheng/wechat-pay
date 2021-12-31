@@ -46,19 +46,19 @@ module WechatPay
     # Example:
     #
     # ``` ruby
-    # WechatPay::Ecommerce.query_refund(sub_mchid: '16000000', out_refund_no: 'N202104302474') # 注意这里的out_refund_no用的是商户订单号，微信文档有误
-    # WechatPay::Ecommerce.query_refund(sub_mchid: '16000000', refund_id: '420000103020210508005624628') # 注意这里的refund_id用的是微信交易单号transaction_id，微信文档有误
+    # WechatPay::Ecommerce.query_refund(sub_mchid: '16000000', out_refund_no: 'AFS202104302474')
+    # WechatPay::Ecommerce.query_refund(sub_mchid: '16000000', refund_id: '50000000382019052709732678859')
     # ```
     #
     def self.query_refund(params)
       if params[:refund_id]
         params.delete(:out_refund_no)
         refund_id = params.delete(:refund_id)
-        path = "/v3/pay/partner/transactions/id/#{refund_id}"
+        path = "/v3/ecommerce/refunds/id/#{refund_id}"
       else
         params.delete(:refund_id)
         out_refund_no = params.delete(:out_refund_no)
-        path = "/v3/pay/partner/transactions/out-trade-no/#{out_refund_no}"
+        path = "/v3/ecommerce/refunds/out-refund-no/#{out_refund_no}"
       end
 
       params = params.merge({
@@ -112,8 +112,8 @@ module WechatPay
     # Example:
     #
     # ``` ruby
-    # WechatPay::Ecommerce.query_refund(sub_mchid: '16000000', out_refund_no: 'N202104302474') # 注意这里的out_refund_no用的是商户订单号，微信文档有误
-    # WechatPay::Ecommerce.query_refund(sub_mchid: '16000000', refund_id: '420000103020210508005624628') # 注意这里的refund_id用的是微信交易单号transaction_id，微信文档有误
+    # WechatPay::Ecommerce.query_refund(sub_mchid: '16000000', out_refund_no: 'AFS202104302474')
+    # WechatPay::Ecommerce.query_refund(sub_mchid: '16000000', refund_id: '50000000382019052709732678859')
     # ```
     #
     def self.query_return_advance_refund(params)
