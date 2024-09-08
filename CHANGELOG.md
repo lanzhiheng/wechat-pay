@@ -1,5 +1,9 @@
 # Next Release
 
+## 1.1.1 (09/08/2024)
+
+* Add `WechatPay::Config` to replace old configuration.
+
 ## 1.1.0 (07/26/2021)
 
 * Fix `Accept-Encoding` issue in wechat.

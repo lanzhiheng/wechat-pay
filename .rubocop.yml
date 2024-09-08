@@ -8,6 +8,9 @@ Style/AsciiComments:
 Metrics/BlockLength:
   Enabled: false
 
+Metrics/ParameterLists:
+  Max: 6
+
 Metrics/AbcSize:
   Enabled: false
 

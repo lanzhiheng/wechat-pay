@@ -15,7 +15,7 @@ module WechatPay
       # ``` ruby
       # WechatPay::Ecommerce.tradebill(bill_date: '2021-04-30')
       # ```
-      def tradebill(params)
+      def tradebill(params, &block)
         path = '/v3/bill/tradebill'
         method = 'GET'
 
@@ -27,7 +27,8 @@ module WechatPay
           method: method,
           extra_headers: {
             'Content-Type' => 'application/x-www-form-urlencoded'
-          }
+          },
+          &block
         )
       end
 
@@ -43,7 +44,7 @@ module WechatPay
       # WechatPay::Ecommerce.fundflowbill(bill_date: '2021-04-30')
       # ```
       #
-      def fundflowbill(params)
+      def fundflowbill(params, &block)
         path = '/v3/bill/fundflowbill'
         method = 'GET'
 
@@ -55,7 +56,8 @@ module WechatPay
           method: method,
           extra_headers: {
             'Content-Type' => 'application/x-www-form-urlencoded'
-          }
+          },
+          &block
         )
       end
 
@@ -71,7 +73,7 @@ module WechatPay
       # WechatPay::Ecommerce.ecommerce_fundflowbill(bill_date: '2021-04-30', account_type: 'ALL', algorithm: 'AEAD_AES_256_GCM')
       # ```
       #
-      def ecommerce_fundflowbill(params)
+      def ecommerce_fundflowbill(params, &block)
         path = '/v3/ecommerce/bill/fundflowbill'
         method = 'GET'
 
@@ -83,7 +85,8 @@ module WechatPay
           method: method,
           extra_headers: {
             'Content-Type' => 'application/x-www-form-urlencoded'
-          }
+          },
+          &block
         )
       end
     end

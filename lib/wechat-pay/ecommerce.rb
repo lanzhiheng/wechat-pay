@@ -31,7 +31,7 @@ module WechatPay
     # WechatPay::Ecommerce.media_video_upload(File.open('Your Video'))
     # ```
     #
-    def self.media_video_upload(video)
+    def self.media_video_upload(video, &block)
       url = '/v3/merchant/media/video_upload'
       method = 'POST'
       meta = {
@@ -52,7 +52,8 @@ module WechatPay
         payload: payload,
         extra_headers: {
           'Content-Type' => nil
-        }
+        },
+        &block
       )
     end
 
@@ -65,7 +66,7 @@ module WechatPay
     # ``` ruby
     # WechatPay::Ecommerce.media_upload(File.open('Your Image'))
     # ```
-    def self.media_upload(image)
+    def self.media_upload(image, &block)
       url = '/v3/merchant/media/upload'
       method = 'POST'
       meta = {
@@ -86,7 +87,8 @@ module WechatPay
         payload: payload,
         extra_headers: {
           'Content-Type' => nil # Pass nil to remove the Content-Type
-        }
+        },
+        &block
       )
     end
   end

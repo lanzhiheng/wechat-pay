@@ -14,7 +14,7 @@ module WechatPay
     # ``` ruby
     # WechatPay::Ecommerce.query_realtime_balance(sub_mchid: '1600000')
     # ```
-    def self.query_realtime_balance(params)
+    def self.query_realtime_balance(params, &block)
       sub_mchid = params.delete(:sub_mchid)
       url = "/v3/ecommerce/fund/balance/#{sub_mchid}"
       method = 'GET'
@@ -24,7 +24,8 @@ module WechatPay
         method: method,
         extra_headers: {
           'Content-Type' => 'application/x-www-form-urlencoded'
-        }
+        },
+        &block
       )
     end
 
@@ -39,7 +40,7 @@ module WechatPay
     # ``` ruby
     # WechatPay::Ecommerce.query_endday_balance(sub_mchid: '1600000', date: '2019-08-17')
     # ```
-    def self.query_endday_balance(params)
+    def self.query_endday_balance(params, &block)
       sub_mchid = params.delete(:sub_mchid)
       path = "/v3/ecommerce/fund/balance/#{sub_mchid}"
       method = 'GET'
@@ -51,7 +52,8 @@ module WechatPay
         method: method,
         extra_headers: {
           'Content-Type' => 'application/x-www-form-urlencoded'
-        }
+        },
+        &block
       )
     end
 
@@ -68,7 +70,7 @@ module WechatPay
     # WechatPay::Ecommerce.query_platform_realtime_balance(account_type: 'FEES') # fees account
     # ```
     #
-    def self.query_platform_realtime_balance(params)
+    def self.query_platform_realtime_balance(params, &block)
       account_type = params.delete(:account_type)
       url = "/v3/merchant/fund/balance/#{account_type}"
       method = 'GET'
@@ -78,7 +80,8 @@ module WechatPay
         method: method,
         extra_headers: {
           'Content-Type' => 'application/x-www-form-urlencoded'
-        }
+        },
+        &block
       )
     end
 
@@ -95,7 +98,7 @@ module WechatPay
     # WechatPay::Ecommerce.query_platform_endday_balance(account_type: 'FEES')
     # ```
     #
-    def self.query_platform_endday_balance(params)
+    def self.query_platform_endday_balance(params, &block)
       account_type = params.delete(:account_type)
       path = "/v3/merchant/fund/dayendbalance/#{account_type}"
       method = 'GET'
@@ -107,7 +110,8 @@ module WechatPay
         method: method,
         extra_headers: {
           'Content-Type' => 'application/x-www-form-urlencoded'
-        }
+        },
+        &block
       )
     end
   end
