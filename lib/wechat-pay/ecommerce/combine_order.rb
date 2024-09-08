@@ -40,8 +40,8 @@ module WechatPay
     def self.define_combine_transaction_method(key, value, _document)
       const_set("INVOKE_COMBINE_TRANSACTIONS_IN_#{key.upcase}_FIELDS",
                 %i[combine_out_trade_no combine_payer_info sub_orders notify_url].freeze)
-      define_singleton_method("invoke_combine_transactions_in_#{key}") do |params|
-        combine_transactions_method_by_suffix(value, params)
+      define_singleton_method("invoke_combine_transactions_in_#{key}") do |params, &block|
+        combine_transactions_method_by_suffix(value, params, &block)
       end
     end
 
@@ -61,7 +61,7 @@ module WechatPay
     # WechatPay::Ecommerce.query_order(combine_out_trade_no: 'C202104302474')
     # ```
     #
-    def self.query_combine_order(params)
+    def self.query_combine_order(params, &block)
       combine_out_trade_no = params.delete(:combine_out_trade_no)
 
       url = "/v3/combine-transactions/out-trade-no/#{combine_out_trade_no}"
@@ -73,7 +73,8 @@ module WechatPay
         path: url,
         extra_headers: {
           'Content-Type' => 'application/x-www-form-urlencoded'
-        }
+        },
+        &block
       )
     end
 
@@ -86,7 +87,7 @@ module WechatPay
     # ``` ruby
     # WechatPay::Ecommerce.close_combine_order(combine_out_trade_no: 'C202104302474')
     # ```
-    def self.close_combine_order(params)
+    def self.close_combine_order(params, &block)
       combine_out_trade_no = params.delete(:combine_out_trade_no)
 
       url = "/v3/combine-transactions/out-trade-no/#{combine_out_trade_no}/close"
@@ -103,20 +104,21 @@ module WechatPay
         method: method,
         for_sign: payload_json,
         payload: payload_json,
-        path: url
+        path: url,
+        &block
       )
     end
 
     class << self
       private
 
-      def combine_transactions_method_by_suffix(suffix, params)
+      def combine_transactions_method_by_suffix(suffix, params, &block)
         url = "/v3/combine-transactions/#{suffix}"
         method = 'POST'
-
+        config = WechatPayHelper.fetch_or_default_config(&block)
         params = {
-          combine_mchid: WechatPay.mch_id,
-          combine_appid: WechatPay.app_id
+          combine_mchid: config.mch_id,
+          combine_appid: config.app_id
         }.merge(params)
 
         payload_json = params.to_json
@@ -125,7 +127,8 @@ module WechatPay
           method: method,
           path: url,
           for_sign: payload_json,
-          payload: payload_json
+          payload: payload_json,
+          &block
         )
       end
     end

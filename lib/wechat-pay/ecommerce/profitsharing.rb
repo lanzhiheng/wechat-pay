@@ -16,7 +16,7 @@ module WechatPay
       # params = {"out_trade_no"=>"P202104306585", "transaction_id"=>"4323400972202104301286330188", "sub_mchid"=>"160000", "out_order_no"=>"N202104307987", "finish"=>true, "receivers"=>[{"type"=>"MERCHANT_ID", "receiver_account"=>"1607189890", "amount"=>1, "description"=>"平台抽成", "receiver_name"=>"CXOO5SF5sylMhSWjUBHQ6dBN0BTdrGExiziO8OEnJEG/nAa7gw6JTbsFQVhUbXD2er07Gcvt7qsLg7wYEe6iqNKbHHRWvChVVKWcKSyvfMOcRa95lxUkVn2+YdMmQ/Rt2h+xN7HMFMVPh9Py2c3sxnv1hZSraTEBWp577NOVwfSKiDTOAnbLtVtLbJndZ2N/bRXzW/gpbQV6TnnsrKPJ+NQ64kCedaYoO0XvEK1JavJju4kUAw/TnJ78jBMwj0gx2kfrsAgtwGrIGhrqhGcGHwwwPPDk5lS/iVaKpSdMvxOHN/9mrAqgqmvBg9uHRKE4sUqkZWuaiAFvYF9/5sLgjQ=="}]}
       # WechatPay::Ecommerce.request_profitsharing(params)
       # ```
-      def request_profitsharing(params)
+      def request_profitsharing(params, &block)
         url = '/v3/ecommerce/profitsharing/orders'
         method = 'POST'
         params = {
@@ -32,7 +32,8 @@ module WechatPay
           payload: payload_json,
           extra_headers: {
             'Wechatpay-Serial' => WechatPay.platform_serial_no
-          }
+          },
+          &block
         )
       end
 
@@ -48,7 +49,7 @@ module WechatPay
       # WechatPay::Ecommerce.query_profitsharing(out_order_no: 'N202104288345', sub_mchid: '16000000', transaction_id: '4200001048202104280183691118')
       # ```
       #
-      def query_profitsharing(params)
+      def query_profitsharing(params, &block)
         method = 'GET'
         query = build_query(params)
         path = '/v3/ecommerce/profitsharing/orders'
@@ -59,7 +60,8 @@ module WechatPay
           method: method,
           extra_headers: {
             'Content-Type' => 'application/x-www-form-urlencoded'
-          }
+          },
+          &block
         )
       end
 
@@ -73,7 +75,7 @@ module WechatPay
       # WechatPay::Ecommerce.return_profitsharing(out_order_no: 'P202104306585', sub_mchid: '16000000', out_return_no: 'R20210430223', return_mchid: '180000', amount: 1, description: '分账回退')
       # WechatPay::Ecommerce.return_profitsharing(order_id: '3008450740201411110007820472', sub_mchid: '16000000', out_return_no: 'R20210430223', return_mchid: '180000', amount: 1, description: '分账回退')
       # ```
-      def return_profitsharing(params)
+      def return_profitsharing(params, &block)
         url = '/v3/ecommerce/profitsharing/returnorders'
         method = 'POST'
 
@@ -83,7 +85,8 @@ module WechatPay
           method: method,
           path: url,
           for_sign: payload_json,
-          payload: payload_json
+          payload: payload_json,
+          &block
         )
       end
 
@@ -99,7 +102,7 @@ module WechatPay
       # WechatPay::Ecommerce.query_return_profitsharing(sub_mchid: '1608747309', out_order_no: 'P202104306585', out_return_no: 'R202105023455')
       # WechatPay::Ecommerce.query_return_profitsharing(sub_mchid: '1608747309', order_id: '3008450740201411110007820472', out_return_no: 'R202105023455')
       # ```
-      def query_return_profitsharing(params)
+      def query_return_profitsharing(params, &block)
         method = 'GET'
         query = build_query(params)
         path = '/v3/ecommerce/profitsharing/returnorders'
@@ -110,7 +113,8 @@ module WechatPay
           method: method,
           extra_headers: {
             'Content-Type' => 'application/x-www-form-urlencoded'
-          }
+          },
+          &block
         )
       end
 
@@ -126,7 +130,7 @@ module WechatPay
       # WechatPay::Ecommerce.finish_profitsharing(sub_mchid: '160000', out_order_no: 'P202104303106', transaction_id: '4323400972202104305131070133', description: '直接打款到二级商户不分账').bod
       # ```
       #
-      def finish_profitsharing(params)
+      def finish_profitsharing(params, &block)
         url = '/v3/ecommerce/profitsharing/finish-order'
         method = 'POST'
 
@@ -136,7 +140,8 @@ module WechatPay
           method: method,
           path: url,
           for_sign: payload_json,
-          payload: payload_json
+          payload: payload_json,
+          &block
         )
       end
 
@@ -152,7 +157,7 @@ module WechatPay
       # WechatPay::Ecommerce.query_profitsharing_amount({ transaction_id: '4323400972202104301286330188' })
       # ```
       #
-      def query_profitsharing_amount(params)
+      def query_profitsharing_amount(params, &block)
         method = 'GET'
         transaction_id = params.delete(:transaction_id)
         url = "/v3/ecommerce/profitsharing/orders/#{transaction_id}/amounts"
@@ -162,7 +167,8 @@ module WechatPay
           method: method,
           extra_headers: {
             'Content-Type' => 'application/x-www-form-urlencoded'
-          }
+          },
+          &block
         )
       end
 
@@ -178,7 +184,7 @@ module WechatPay
       # WechatPay::Ecommerce.add_profitsharing_receivers(type: 'PERSONAL_OPENID', account: 'oly6s5cLmmVzzr8iPyI6mJj7qG2s', name: 'Lan', relation_type: 'DISTRIBUTOR').body
       # ```
       #
-      def add_profitsharing_receivers(params)
+      def add_profitsharing_receivers(params, &block)
         url = '/v3/ecommerce/profitsharing/receivers/add'
         method = 'POST'
 
@@ -192,7 +198,8 @@ module WechatPay
           method: method,
           path: url,
           for_sign: payload_json,
-          payload: payload_json
+          payload: payload_json,
+          &block
         )
       end
 
@@ -208,7 +215,7 @@ module WechatPay
       # WechatPay::Ecommerce.remove_profitsharing_receivers(type: 'PERSONAL_OPENID', account: 'oly6s5cLmmVzzr8iPyI6mJj7qG2s', name: 'Lan', relation_type: 'DISTRIBUTOR').body
       # ```
       #
-      def delete_profitsharing_receivers(params)
+      def delete_profitsharing_receivers(params, &block)
         url = '/v3/ecommerce/profitsharing/receivers/delete'
         method = 'POST'
 
@@ -222,7 +229,8 @@ module WechatPay
           method: method,
           path: url,
           for_sign: payload_json,
-          payload: payload_json
+          payload: payload_json,
+          &block
         )
       end
     end

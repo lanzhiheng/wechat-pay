@@ -15,7 +15,7 @@ module WechatPay
     # WechatPay::Ecommerce.request_subsidies(sub_mchid: '16000000', transaction_id: '4323400972202104305131070170', amount: 1, description: '订单补差')
     # ```
     #
-    def self.request_subsidies(params)
+    def self.request_subsidies(params, &block)
       url = '/v3/ecommerce/subsidies/create'
       method = 'POST'
 
@@ -25,7 +25,8 @@ module WechatPay
         method: method,
         path: url,
         for_sign: payload_json,
-        payload: payload_json
+        payload: payload_json,
+        &block
       )
     end
 
@@ -41,7 +42,7 @@ module WechatPay
     # WechatPay::Ecommerce.return_subsidies(sub_mchid: '16000000', transaction_id: '4323400972202104305131070170', amount: 1, description: '订单补差', out_order_no: 'P103333')
     # ```
 
-    def self.return_subsidies(params)
+    def self.return_subsidies(params, &block)
       url = '/v3/ecommerce/subsidies/return'
       method = 'POST'
 
@@ -51,7 +52,8 @@ module WechatPay
         method: method,
         path: url,
         for_sign: payload_json,
-        payload: payload_json
+        payload: payload_json,
+        &block
       )
     end
 
@@ -67,7 +69,7 @@ module WechatPay
     # WechatPay::Ecommerce.return_subsidies(sub_mchid: '1600000', transaction_id: '4323400972202104305131070170', amount: 1, description: '订单补差', out_order_no: 'P103333')
     # ```
     #
-    def self.cancel_subsidies(params)
+    def self.cancel_subsidies(params, &block)
       url = '/v3/ecommerce/subsidies/cancel'
       method = 'POST'
 
@@ -77,7 +79,8 @@ module WechatPay
         method: method,
         path: url,
         for_sign: payload_json,
-        payload: payload_json
+        payload: payload_json,
+        &block
       )
     end
   end

@@ -40,19 +40,20 @@ module WechatPay
       # # => params for invoking the wechat pay in app
       # ```
 
-      def generate_app_payment_params_from_prepay_id_and_appid(appid, prepay_id)
+      def generate_app_payment_params_from_prepay_id_and_appid(appid, prepay_id, &block)
         timestamp = Time.now.to_i.to_s
         noncestr = SecureRandom.hex
         string = build_app_paysign_string(appid, timestamp, noncestr, prepay_id)
 
+        config = WechatPayHelper.fetch_or_default_config(&block)
         {
           appId: appid,
-          partnerId: WechatPay.mch_id,
+          partnerId: config.mch_id,
           timeStamp: timestamp,
           nonceStr: noncestr,
           prepayId: prepay_id,
           packageValue: 'Sign=WXPay',
-          sign: sign_string(string)
+          sign: sign_string(string, config)
         }.stringify_keys
       end
 
@@ -88,16 +89,16 @@ module WechatPay
       # WechatPay::Sign.generate_payment_params_from_prepay_id_and_appid(appid, prepay_id)
       # # => params for invoking the wechat pay in miniprogram
       # ```
-      def generate_payment_params_from_prepay_id_and_appid(appid, prepay_id)
+      def generate_payment_params_from_prepay_id_and_appid(appid, prepay_id, &block)
         timestamp = Time.now.to_i.to_s
         noncestr = SecureRandom.hex
         string = build_paysign_string(appid, timestamp, noncestr, prepay_id)
-
+        config = WechatPayHelper.fetch_or_default_config(&block)
         {
           timeStamp: timestamp,
           nonceStr: noncestr,
           package: "prepay_id=#{prepay_id}",
-          paySign: sign_string(string),
+          paySign: sign_string(string, config),
           signType: 'RSA'
         }.stringify_keys
       end
@@ -120,10 +121,12 @@ module WechatPay
       #   # ....
       # end
       # ```
-      def notification_from_wechat?(timestamp, noncestr, json_body, signature)
+      def notification_from_wechat?(timestamp, noncestr, json_body, signature, &block)
         string = build_callback_string(timestamp, noncestr, json_body)
         decoded_signature = Base64.strict_decode64(signature)
-        WechatPay.platform_cert.public_key.verify('SHA256', decoded_signature, string)
+
+        config = WechatPayHelper.fetch_or_default_config(&block)
+        config.platform_cert.public_key.verify('SHA256', decoded_signature, string)
       end
 
       # For signing the sensitive information
@@ -141,8 +144,9 @@ module WechatPay
       # # result
       # "K0MK7g3laREAQ4HIlpIndVmFdz4IyxxiVp42hXFx2CzWRB1fn85ANBxnQXESq91vJ1P9mCt94cHZDoshlEOJRkE1KvcxpBCnG3ghIqiSsLKdLZ3ytO94GBDzCt8nsq+vJKXJbK2XuL9p5h0KYGKZyjt2ydU9Ig6daWTpZH8lAKIsLzPTsaUtScuw/v3M/7t8/4py8N0MOLKbDBDnR5Q+MRHbEWI9nCA3HTAWsSerIIgE7igWnzybxsUzhkV8m49P/Shr2zh6yJAlEnyPLFmQG7GuUaYwDTSLKOWzzPYwxMcucWQha2krC9OlwnZJe6ZWUAI3s4ej4kFRfheOYywRoQ=="
       # ```
-      def sign_important_info(string)
-        platform_public_key = WechatPay.platform_cert.public_key
+      def sign_important_info(string, &block)
+        config = WechatPayHelper.fetch_or_default_config(&block)
+        platform_public_key = config.platform_cert.public_key
         Base64.strict_encode64(platform_public_key.public_encrypt(string, OpenSSL::PKey::RSA::PKCS1_OAEP_PADDING))
       end
 
@@ -167,11 +171,12 @@ module WechatPay
       # end
       # ```
       #
-      def decrypt_the_encrypt_params(associated_data:, nonce:, ciphertext:)
+      def decrypt_the_encrypt_params(associated_data:, nonce:, ciphertext:, &block)
         # https://contest-server.cs.uchicago.edu/ref/ruby_2_3_1_stdlib/libdoc/openssl/rdoc/OpenSSL/Cipher.html
+        config = WechatPayHelper.fetch_or_default_config(&block)
         tag_length = 16
         decipher = OpenSSL::Cipher.new('aes-256-gcm').decrypt
-        decipher.key = WechatPay.mch_key
+        decipher.key = config.mch_key
         decipher.iv = nonce
         signature = Base64.strict_decode64(ciphertext)
         length = signature.length
@@ -199,16 +204,18 @@ module WechatPay
       # # Result
       # "WECHATPAY2-SHA256-RSA2048 mchid=\"16000000\",nonce_str=\"42ac357637f9331794e0c6fb3b3de048\",serial_no=\"0254A801C0\",signature=\"WBJaWlVFur5OGQ/E0ZKIlSDhR8WTNrkW2oCECF3Udrh8BVlnfYf5N5ROeOt9PBxdwD0+ufFQANZKugmXDNat+sFRY2DrIzdP3qYvFIzaYjp6QEtB0UPzvTgcLDULGbwCSTNDxvKRDi07OXPFSmVfmA5SbpbfumgjYOfzt1wcl9Eh+/op/gAB3N010Iu1w4OggR78hxQvPb9GIscuKHjaUWqqwf6v+p3/b0tiSO/SekJa3bMKPhJ2wJj8utBHQtbGO+iUQj1n90naL25MNJUM2XYocv4MasxZZgZnV3v1dtRvFkVo0ApqFyDoiRndr1Q/jPh+wmsb80LuhZ1S4eNfew==\",timestamp=\"1620571488\""
       # ```
-      def build_authorization_header(method, url, json_body)
+      def build_authorization_header(method, url, json_body, &block)
         timestamp = Time.now.to_i
         nonce_str = SecureRandom.hex
         string = build_string(method, url, timestamp, nonce_str, json_body)
-        signature = sign_string(string)
+
+        config = WechatPayHelper.fetch_or_default_config(&block)
+        signature = sign_string(string, config)
 
         params = {
-          mchid: WechatPay.mch_id,
+          mchid: config.mch_id,
           nonce_str: nonce_str,
-          serial_no: WechatPay.apiclient_serial_no,
+          serial_no: config.apiclient_serial_no,
           signature: signature,
           timestamp: timestamp
         }
@@ -218,8 +225,8 @@ module WechatPay
         "WECHATPAY2-SHA256-RSA2048 #{params_string}"
       end
 
-      def sign_string(string)
-        result = WechatPay.apiclient_key.sign('SHA256', string) # 商户私钥的SHA256-RSA2048签名
+      def sign_string(string, config)
+        result = config.apiclient_key.sign('SHA256', string) # 商户私钥的SHA256-RSA2048签名
         Base64.strict_encode64(result) # Base64处理
       end
 

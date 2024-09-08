@@ -15,7 +15,7 @@ module WechatPay
     # WechatPay::Ecommerce.withdraw(sub_mchid: '160000', out_request_no: 'P10000', amount: 1)
     # ```
     #
-    def self.withdraw(params)
+    def self.withdraw(params, &block)
       url = '/v3/ecommerce/fund/withdraw'
       method = 'POST'
 
@@ -23,7 +23,8 @@ module WechatPay
         method: method,
         path: url,
         for_sign: params.to_json,
-        payload: params.to_json
+        payload: params.to_json,
+        &block
       )
     end
 
@@ -40,7 +41,7 @@ module WechatPay
     # WechatPay::Ecommerce.query_withdraw(out_request_no: 'P1000', sub_mchid: '160000')
     # ```
     #
-    def self.query_withdraw(params)
+    def self.query_withdraw(params, &block)
       if params[:withdraw_id]
         params.delete(:out_request_no)
         withdraw_id = params.delete(:withdraw_id)
@@ -60,7 +61,8 @@ module WechatPay
         path: url,
         extra_headers: {
           'Content-Type' => 'application/x-www-form-urlencoded'
-        }
+        },
+        &block
       )
     end
 
@@ -77,7 +79,7 @@ module WechatPay
     # WechatPay::Ecommerce.platform_withdraw(out_request_no: 'P10000', amount: 1, account_type: 'FEES')
     # ```
     #
-    def self.platform_withdraw(params)
+    def self.platform_withdraw(params, &block)
       url = '/v3/merchant/fund/withdraw'
       method = 'POST'
 
@@ -85,7 +87,8 @@ module WechatPay
         method: method,
         path: url,
         for_sign: params.to_json,
-        payload: params.to_json
+        payload: params.to_json,
+        &block
       )
     end
 
@@ -102,7 +105,7 @@ module WechatPay
     # WechatPay::Ecommerce.query_platform_withdraw(withdraw_id: '12313153')
     # ```
     #
-    def self.query_platform_withdraw(params)
+    def self.query_platform_withdraw(params, &block)
       if params[:withdraw_id]
         params.delete(:out_request_no)
         withdraw_id = params.delete(:withdraw_id)
@@ -120,7 +123,8 @@ module WechatPay
         path: url,
         extra_headers: {
           'Content-Type' => 'application/x-www-form-urlencoded'
-        }
+        },
+        &block
       )
     end
 
@@ -133,7 +137,7 @@ module WechatPay
     # ``` ruby
     # WechatPay::Ecommerce.download_exception_withdraw_file(bill_type: 'NO_SUCC', bill_date: '2021-05-10')
     # ```
-    def self.download_exception_withdraw_file(params)
+    def self.download_exception_withdraw_file(params, &block)
       bill_type = params.delete(:bill_type)
       path = "/v3/merchant/fund/withdraw/bill-type/#{bill_type}"
 
@@ -147,7 +151,8 @@ module WechatPay
         path: url,
         extra_headers: {
           'Content-Type' => 'application/x-www-form-urlencoded'
-        }
+        },
+        &block
       )
     end
   end
