@@ -3,31 +3,15 @@
 require 'active_support/concern'
 
 module WechatPayHelper # :nodoc:
-  GATEWAY_URL = 'https://api.mch.weixin.qq.com'
-
   extend ActiveSupport::Concern
 
   class_methods do
     def build_query(params)
-      params.sort.map { |key, value| "#{key}=#{value}" }.join('&')
+      WechatPay.client.build_query(params)
     end
 
     def make_request(method:, path:, for_sign: '', payload: {}, extra_headers: {})
-      authorization = WechatPay::Sign.build_authorization_header(method, path, for_sign)
-      headers = {
-        'Authorization' => authorization,
-        'Content-Type' => 'application/json',
-        'Accept-Encoding' => '*'
-      }.merge(extra_headers)
-
-      RestClient::Request.execute(
-        url: "#{GATEWAY_URL}#{path}",
-        method: method.downcase,
-        payload: payload,
-        headers: headers.compact # Remove empty items
-      )
-    rescue ::RestClient::ExceptionWithResponse => e
-      e.response
+      WechatPay.client.make_request(method: method, path: path, for_sign: for_sign, payload: payload, extra_headers: extra_headers)
     end
   end
 end

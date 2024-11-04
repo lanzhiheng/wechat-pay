@@ -1,17 +1,6 @@
 # frozen_string_literal: true
 
-require 'json'
-require 'wechat-pay/helper'
-require 'wechat-pay/ecommerce/withdraw'
-require 'wechat-pay/ecommerce/balance'
-require 'wechat-pay/ecommerce/applyment'
-require 'wechat-pay/ecommerce/order'
-require 'wechat-pay/ecommerce/combine_order'
-require 'wechat-pay/ecommerce/profitsharing'
-require 'wechat-pay/ecommerce/subsidies'
-require 'wechat-pay/ecommerce/refund'
-require 'wechat-pay/ecommerce/bill'
-
+require 'wechat-pay/ecommerce/ecommerce'
 module WechatPay
   # # 服务商相关接口封装（电商平台，服务商有许多接口共用）
   # 文档: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/open/pay/chapter3_3_3.shtml
@@ -19,75 +8,21 @@ module WechatPay
   # PS: 电商收付通的所有接口已经封装完毕，有需要再补充。
   #
   module Ecommerce
-    include WechatPayHelper
-
-    # 视频上传
-    #
-    # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter2_1_2.shtml
-    #
-    # Example:
-    #
-    # ``` ruby
-    # WechatPay::Ecommerce.media_video_upload(File.open('Your Video'))
-    # ```
-    #
-    def self.media_video_upload(video)
-      url = '/v3/merchant/media/video_upload'
-      method = 'POST'
-      meta = {
-        filename: video.to_path,
-        sha256: Digest::SHA256.hexdigest(video.read)
-      }
-
-      video.rewind
-      payload = {
-        meta: meta.to_json,
-        file: video
-      }
-
-      make_request(
-        method: method,
-        path: url,
-        for_sign: meta.to_json,
-        payload: payload,
-        extra_headers: {
-          'Content-Type' => nil
-        }
-      )
-    end
-
-    # 图片上传
-    #
-    # Document: https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter2_1_1.shtml
-    #
-    # Example:
-    #
-    # ``` ruby
-    # WechatPay::Ecommerce.media_upload(File.open('Your Image'))
-    # ```
-    def self.media_upload(image)
-      url = '/v3/merchant/media/upload'
-      method = 'POST'
-      meta = {
-        filename: image.to_path,
-        sha256: Digest::SHA256.hexdigest(image.read)
-      }
-
-      image.rewind
-      payload = {
-        meta: meta.to_json,
-        file: image
-      }
-
-      make_request(
-        method: method,
-        path: url,
-        for_sign: meta.to_json,
-        payload: payload,
-        extra_headers: {
-          'Content-Type' => nil # Pass nil to remove the Content-Type
-        }
-      )
+    %w[
+      applyment query_applyment certificates query_settlement modify_settlement
+      query_realtime_balance query_endday_balance query_platform_realtime_balance query_platform_endday_balance
+      tradebill fundflowbill ecommerce_fundflowbill
+      invoke_combine_transactions_in_js invoke_combine_transactions_in_h5 invoke_combine_transactions_in_native invoke_combine_transactions_in_app invoke_combine_transactions_in_miniprogram query_combine_order close_combine_order
+      invoke_transactions_in_native invoke_transactions_in_js invoke_transactions_in_app invoke_transactions_in_h5 invoke_transactions_in_miniprogram query_order close_order
+      request_profitsharing query_profitsharing return_profitsharing query_return_profitsharing finish_profitsharing query_profitsharing_amount add_profitsharing_receivers delete_profitsharing_receivers
+      invoke_refund query_refund return_advance_refund query_return_advance_refund
+      request_subsidies return_subsidies cancel_subsidies
+      withdraw query_withdraw platform_withdraw query_platform_withdraw download_exception_withdraw_file
+      media_video_upload media_upload
+    ].each do |method_name|
+      define_singleton_method(method_name) do |*args|
+        WechatPay.ecommerce.send(method_name, *args)
+      end
     end
   end
 end

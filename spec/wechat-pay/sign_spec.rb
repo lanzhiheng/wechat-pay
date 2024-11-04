@@ -17,7 +17,7 @@ RSpec.describe 'WechatPay::Sign' do
     expect(SecureRandom).to receive(:hex).with(any_args).and_return(hex)
 
     params = WechatPay::Sign.generate_app_payment_params_from_prepay_id_and_appid(appid, prepay_id)
-    result = { 'partnerId' => WechatPay.mch_id, 'appId' => appid, 'packageValue' => 'Sign=WXPay', 'timeStamp' => '1600000', 'nonceStr' => 'hhhhhhhhh', 'prepayId' => prepay_id, 'sign' => 'iGxYj/P4E4PG8bnCmLWCXn4sRxumpPY2d7Z6LuRvHPgTh7vB61d/fS9jGKBLooqxRUpS0of6egMVGmbNKa1tYj028P5AGIdfkfdIQcYpL9gHTvDfW0abZ1GK+79HtlcHXkuwJS6E8N1Q/ZliG9csCzB5AwzW40PGilDWzMzfkycvQkcuR0jhLx+RWMWFU1SupBqogT7KwX0En1956zKM0lRWMpclvH8BWqGgMxuFOy0pUCjYGSyUtlaP42p8vL+WLyw/JT70QQsmRCnCYAi8l7uSq3YKRc7JTA7WBmkrhU8lvNbyCz7YmIOspkWMgyBPuX5qjcl0EGhHZy3EDq6/Dg==' }
+    result = { 'partnerId' => WechatPay.config.mch_id, 'appId' => appid, 'packageValue' => 'Sign=WXPay', 'timeStamp' => '1600000', 'nonceStr' => 'hhhhhhhhh', 'prepayId' => prepay_id, 'sign' => 'iGxYj/P4E4PG8bnCmLWCXn4sRxumpPY2d7Z6LuRvHPgTh7vB61d/fS9jGKBLooqxRUpS0of6egMVGmbNKa1tYj028P5AGIdfkfdIQcYpL9gHTvDfW0abZ1GK+79HtlcHXkuwJS6E8N1Q/ZliG9csCzB5AwzW40PGilDWzMzfkycvQkcuR0jhLx+RWMWFU1SupBqogT7KwX0En1956zKM0lRWMpclvH8BWqGgMxuFOy0pUCjYGSyUtlaP42p8vL+WLyw/JT70QQsmRCnCYAi8l7uSq3YKRc7JTA7WBmkrhU8lvNbyCz7YmIOspkWMgyBPuX5qjcl0EGhHZy3EDq6/Dg==' }
     expect(params).to eq(result)
   end
 
@@ -46,7 +46,7 @@ RSpec.describe 'WechatPay::Sign' do
     authorization_header = WechatPay::Sign.build_authorization_header('GET', '/v3/api/wechat_pay',
                                                                       { name: 'Ruby' }.to_json)
     expected_string = format(
-      'WECHATPAY2-SHA256-RSA2048 mchid="%<mchid>s",nonce_str="%<hex>s",serial_no="%<serial_no>s",signature="b61tFFRwxJgzO+QeTHiRxxiOpniZCK2cwUtnBEE7QVe06k3tNjfIaXtrOOSc3Gr84mx9xlQePM7s2cf1B3ixYKnvcJiTNnUsQwU9omyyUSjO1YIdwQTrra1r6+VUmM7pAq1eowa/WQhvAP2QkG2J4ienMwNtVuHb4Tw7X1R7LSh2/DEl+LmYCtEd7Acc4AMFyLE/rqdN19fdO+ZSTpVy0rTDMSsgpCACP8Xi7lQFyej9Gb72XYq0oHelWpCSyIRoWm7214ck76ytcgPIe15jOpLYO+L2cYf5VSMPAJ9neX45udpBuYXJWC6NchHko/HNN473zlNqOb6gCqwugzkvNg==",timestamp="%<timestamp>s"', timestamp: timestamp.to_i, mchid: WechatPay.mch_id, hex: hex, serial_no: WechatPay.apiclient_serial_no
+      'WECHATPAY2-SHA256-RSA2048 mchid="%<mchid>s",nonce_str="%<hex>s",serial_no="%<serial_no>s",signature="b61tFFRwxJgzO+QeTHiRxxiOpniZCK2cwUtnBEE7QVe06k3tNjfIaXtrOOSc3Gr84mx9xlQePM7s2cf1B3ixYKnvcJiTNnUsQwU9omyyUSjO1YIdwQTrra1r6+VUmM7pAq1eowa/WQhvAP2QkG2J4ienMwNtVuHb4Tw7X1R7LSh2/DEl+LmYCtEd7Acc4AMFyLE/rqdN19fdO+ZSTpVy0rTDMSsgpCACP8Xi7lQFyej9Gb72XYq0oHelWpCSyIRoWm7214ck76ytcgPIe15jOpLYO+L2cYf5VSMPAJ9neX45udpBuYXJWC6NchHko/HNN473zlNqOb6gCqwugzkvNg==",timestamp="%<timestamp>s"', timestamp: timestamp.to_i, mchid: WechatPay.config.mch_id, hex: hex, serial_no: WechatPay.config.apiclient_serial_no
     )
     expect(authorization_header).to eq(expected_string)
   end
@@ -54,7 +54,7 @@ RSpec.describe 'WechatPay::Sign' do
   it 'sign string with sha256' do
     test_string = 'Hello Ruby'
     signature = WechatPay::Sign.sign_string(test_string)
-    apiclient_public_key = WechatPay.apiclient_cert.public_key
+    apiclient_public_key = WechatPay.config.apiclient_cert.public_key
     decoded_signature = Base64.strict_decode64(signature)
     expect(apiclient_public_key.verify('SHA256', decoded_signature, test_string)).to eq(true)
   end
@@ -72,7 +72,7 @@ RSpec.describe 'WechatPay::Sign' do
     nonce = '46e4d8f11f62' # 必须是12个字节
     associated_data = 'transaction'
     cipher = OpenSSL::Cipher.new('aes-256-gcm').encrypt
-    cipher.key = WechatPay.mch_key
+    cipher.key = WechatPay.config.mch_key
     cipher.iv =  nonce
     cipher.auth_data = associated_data
     encrypted = cipher.update(data) + cipher.final

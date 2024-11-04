@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module WechatPay
-  # 账单相关
   module Ecommerce
-    class << self
+    # 账单相关
+    module Bill
       TRADEBILL_FIELDS = [:bill_date].freeze # :nodoc:
       #
       # 申请交易账单
@@ -19,10 +19,10 @@ module WechatPay
         path = '/v3/bill/tradebill'
         method = 'GET'
 
-        query = build_query(params)
+        query = @client.build_query(params)
         url = "#{path}?#{query}"
 
-        make_request(
+        @client.make_request(
           path: url,
           method: method,
           extra_headers: {
@@ -47,10 +47,10 @@ module WechatPay
         path = '/v3/bill/fundflowbill'
         method = 'GET'
 
-        query = build_query(params)
+        query = @client.build_query(params)
         url = "#{path}?#{query}"
 
-        make_request(
+        @client.make_request(
           path: url,
           method: method,
           extra_headers: {
@@ -75,10 +75,10 @@ module WechatPay
         path = '/v3/ecommerce/bill/fundflowbill'
         method = 'GET'
 
-        query = build_query(params)
+        query = @client.build_query(params)
         url = "#{path}?#{query}"
 
-        make_request(
+        @client.make_request(
           path: url,
           method: method,
           extra_headers: {

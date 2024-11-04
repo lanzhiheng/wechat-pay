@@ -45,12 +45,14 @@ $ bundle
 Create `config/initializer/wechat_pay.rb`and put following configurations into it
 
 ``` ruby
-WechatPay.apiclient_key = File.read('apiclient_key.pem')
-WechatPay.platform_cert = File.read('platform_cert.pem') # You should comment this line before downloaded platform_cert.
-WechatPay.apiclient_cert = File.read('apiclient_cert.pem')
-WechatPay.app_id = 'Your App Id'
-WechatPay.mch_id = 'Your Mch Id'
-WechatPay.mch_key = 'Your Mch Key'
+WechatPay.configure do |config|
+  WechatPay.apiclient_key = File.read('apiclient_key.pem')
+  WechatPay.platform_cert = File.read('platform_cert.pem') # You should comment this line before downloaded platform_cert.
+  WechatPay.apiclient_cert = File.read('apiclient_cert.pem')
+  WechatPay.app_id = 'Your App Id'
+  WechatPay.mch_id = 'Your Mch Id'
+  WechatPay.mch_key = 'Your Mch Key'
+end
 ```
 
 ## Download

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module WechatPay
-  # 分账相关
   module Ecommerce
-    class << self
+    # 分账相关
+    module Profitsharing
       REQUEST_PROFITSHARING_FIELDS = %i[out_trade_no transaction_id sub_mchid out_order_no receivers finish].freeze # :nodoc:
       #
       # 分账请求
@@ -20,18 +20,18 @@ module WechatPay
         url = '/v3/ecommerce/profitsharing/orders'
         method = 'POST'
         params = {
-          appid: WechatPay.app_id
+          appid: @config.app_id
         }.merge(params)
 
         payload_json = params.to_json
 
-        make_request(
+        @client.make_request(
           method: method,
           path: url,
           for_sign: payload_json,
           payload: payload_json,
           extra_headers: {
-            'Wechatpay-Serial' => WechatPay.platform_serial_no
+            'Wechatpay-Serial' => @config.platform_serial_no
           }
         )
       end
@@ -50,11 +50,11 @@ module WechatPay
       #
       def query_profitsharing(params)
         method = 'GET'
-        query = build_query(params)
+        query = @client.build_query(params)
         path = '/v3/ecommerce/profitsharing/orders'
         url = "#{path}?#{query}"
 
-        make_request(
+        @client.make_request(
           path: url,
           method: method,
           extra_headers: {
@@ -79,7 +79,7 @@ module WechatPay
 
         payload_json = params.to_json
 
-        make_request(
+        @client.make_request(
           method: method,
           path: url,
           for_sign: payload_json,
@@ -101,11 +101,11 @@ module WechatPay
       # ```
       def query_return_profitsharing(params)
         method = 'GET'
-        query = build_query(params)
+        query = @client.build_query(params)
         path = '/v3/ecommerce/profitsharing/returnorders'
         url = "#{path}?#{query}"
 
-        make_request(
+        @client.make_request(
           path: url,
           method: method,
           extra_headers: {
@@ -132,7 +132,7 @@ module WechatPay
 
         payload_json = params.to_json
 
-        make_request(
+        @client.make_request(
           method: method,
           path: url,
           for_sign: payload_json,
@@ -157,7 +157,7 @@ module WechatPay
         transaction_id = params.delete(:transaction_id)
         url = "/v3/ecommerce/profitsharing/orders/#{transaction_id}/amounts"
 
-        make_request(
+        @client.make_request(
           path: url,
           method: method,
           extra_headers: {
@@ -183,12 +183,12 @@ module WechatPay
         method = 'POST'
 
         params = {
-          appid: WechatPay.app_id
+          appid: @config.app_id
         }.merge(params)
 
         payload_json = params.to_json
 
-        make_request(
+        @client.make_request(
           method: method,
           path: url,
           for_sign: payload_json,
@@ -213,12 +213,12 @@ module WechatPay
         method = 'POST'
 
         params = {
-          appid: WechatPay.app_id
+          appid: @config.app_id
         }.merge(params)
 
         payload_json = params.to_json
 
-        make_request(
+        @client.make_request(
           method: method,
           path: url,
           for_sign: payload_json,
